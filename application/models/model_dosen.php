@@ -9,26 +9,32 @@
     function save($input)
     {
 
-      $dataUser = array(
-        //tabel di database => name di form
-        'nama_lengkap' => $input->post('nama_dosen', TRUE),
-        'username'    => $input->post('username', TRUE),
-        'password'    => md5($input->post('password', TRUE)),
-        'id_level_user' => 3,
-        'gender'      => $input->post('gender', TRUE),
-      );
-
-      $this->db->insert($this->tableUser, $dataUser);
-
-      $this->db->where('username', $dataUser['username']);
-			$user = $this->db->get($this->tableUser)->row_array();
-
-      $dataDosen = array(
-        //tabel di database => name di form
-        'id_user' => $user['id_user'],
-        'nidn'       => $input->post('nidn', TRUE),
-      );
-      $this->db->insert($this->table, $dataDosen);
+      $err = "";
+      try {
+        $dataUser = array(
+          //tabel di database => name di form
+          'nama_lengkap' => $input->post('nama_dosen', TRUE),
+          'username'    => $input->post('username', TRUE),
+          'password'    => md5($input->post('password', TRUE)),
+          'id_level_user' => 3,
+          'gender'      => $input->post('gender', TRUE),
+        );
+  
+        $this->db->insert($this->tableUser, $dataUser);
+  
+        $this->db->where('username', $dataUser['username']);
+        $user = $this->db->get($this->tableUser)->row_array();
+  
+        $dataDosen = array(
+          //tabel di database => name di form
+          'id_user' => $user['id_user'],
+          'nidn'       => $input->post('nidn', TRUE),
+        );
+        $this->db->insert($this->table, $dataDosen);
+      } catch (\Throwable $th) {
+        $err = $th->getMessage();
+      }
+      return $err;
     }
 
     function update($input)

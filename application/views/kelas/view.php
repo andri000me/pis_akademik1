@@ -25,6 +25,23 @@
                         <th>AKSI</th>
                     </tr>
                 </thead>
+                <?php
+                    $no = 1;
+                    foreach ($kelas->result() as $row) {
+                       echo "<tr>
+                                <td>$no</td>
+                                <td>$row->kd_kelas</td>
+                                <td>$row->nama_kelas</td>
+                                <td>$row->nama_tingkatan</td>
+                                <td>$row->nama_jurusan</td>
+                                <td>
+                                    <a href='/kelas/edit/$row->kd_kelas' class='btn btn-xs btn-primary' data-placement='top'><i class='fa fa-edit'>Edit</i></a>
+                                    <a href='/kelas/delete/$row->kd_kelas' class='btn btn-xs btn-danger' data-placement='top'><i class='fa fa-edit'>Delete</i></a>
+                                </td>
+                            </tr>";
+                        $no++;
+                    }
+                ?>  
               </table>
 
             </div>
@@ -49,49 +66,3 @@
 <script src="<?php echo base_url(); ?>assets/bower_components/datatables.net/js/jquery.dataTables.min.js"></script>
 <script src="<?php echo base_url(); ?>assets/bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
 <link rel="stylesheet" href="<?php echo base_url(); ?>assets/bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css">
-
-<script>
-        $(document).ready(function() {
-            var t = $('#mytable').DataTable( {
-                "ajax": '<?php echo site_url('kelas/data'); ?>',
-                "order": [[ 1, 'asc' ]],
-                "columns": [
-                    {
-                        "data": null,
-                        "width": "50px",
-                        "class": "text-center",
-                        "orderable": false,
-                    },
-                    {
-                        "data": "kd_kelas",
-                        "width": "150px",
-                        "class": "text-center"
-                    },
-                    { 
-                        "data": "nama_kelas",
-                    },
-                    { 
-                        "data": "nama_tingkatan",
-                        "width": "100px",
-                        "class": "text-center"
-                    },
-                    { 
-                        "data": "nama_jurusan",
-                        "width": "100px",
-                        "class": "text-center"
-                    },
-                    { 
-                        "data": "aksi",
-                        "width": "80px",
-                        "class": "text-center"
-                    },
-                ]
-            } );
-               
-            t.on( 'order.dt search.dt', function () {
-                t.column(0, {search:'applied', order:'applied'}).nodes().each( function (cell, i) {
-                    cell.innerHTML = i+1;
-                } );
-            } ).draw();
-        } );
-</script>

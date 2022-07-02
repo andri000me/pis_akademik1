@@ -4,6 +4,14 @@
 	{
 
 		public $table = "tbl_user";
+
+		function getAll()
+		{
+		$sql = "SELECT * FROM `tbl_user` u LEFT JOIN tbl_level_user lu ON lu.id_level_user = u.id_level_user;
+		";
+		$data = $this->db->query($sql);
+				return $data;
+		}
 		
 		// mengambil data $username & $password dari hasil parsing controller Auth function check_login() dan mencocokanya dengan data yang ada di database
 		function login($username, $password)

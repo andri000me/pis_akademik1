@@ -11,53 +11,12 @@
 			$this->load->model('model_kelas');
 		}
 
-		function data()
-		{
-			// $sql = "SELECT tk.*, ttk.nama_tingkatan, tj.nama_jurusan 
-			// FROM tbl_kelas AS tk, tbl_tingkatan_kelas AS ttk, tbl_jurusan AS tj 
-			// WHERE tk.kd_tingkatan = ttk.kd_tingkatan AND tk.kd_jurusan = tj.kd_jurusan"
-			// Biasanya menggunakan query untuk mengambil nama dari tabel yang berbeda tapi saling berelasi,
-			// karena terlalu panjang, harus menggunakan foreach lagi dan menurut saya sepertinya 
-			//tidak bisa melakukan foreach di datatable, maka saya menggunaka create view kita bisa membuat query tersebut menjadi sebuah table
-
-			// nama table
-			$table      = 'view_kelas';
-			// nama PK
-			$primaryKey = 'kd_kelas';
-			// list field yang mau ditampilkan
-			$columns    = array(
-				//tabel db(kolom di database) => dt(nama datatable di view)
-				array('db' => 'kd_kelas', 'dt' => 'kd_kelas'),
-		        array('db' => 'nama_kelas', 'dt' => 'nama_kelas'),
-		        array('db' => 'nama_tingkatan', 'dt' => 'nama_tingkatan'),
-		        array('db' => 'nama_jurusan', 'dt' => 'nama_jurusan'),
-		        //untuk menampilkan aksi(edit/delete dengan parameter kode kelas)
-		        array(
-		              'db' => 'kd_kelas',
-		              'dt' => 'aksi',
-		              'formatter' => function($d) {
-		               		return anchor('kelas/edit/'.$d, '<i class="fa fa-edit"></i>', 'class="btn btn-xs btn-primary" data-placement="top" title="Edit"').' 
-		               		'.anchor('kelas/delete/'.$d, '<i class="fa fa-times fa fa-white"></i>', 'class="btn btn-xs btn-danger" data-placement="top" title="Delete"');
-		            }
-		        )
-		    );
-
-			$sql_details = array(
-				'user' => $this->db->username,
-				'pass' => $this->db->password,
-				'db'   => $this->db->database,
-				'host' => $this->db->hostname
-		    );
-
-		    echo json_encode(
-		     	SSP::simple($_GET, $sql_details, $table, $primaryKey, $columns)
-		     );
-
-		}
+	
 
 		function index()
 		{
-			$this->template->load('template', 'kelas/view');
+			$data['kelas'] = $this->model_kelas->getAll();
+			$this->template->load('template', 'kelas/view', $data);
 		}
 
 		function add()

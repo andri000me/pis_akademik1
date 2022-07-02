@@ -11,6 +11,8 @@
 
     function index()
     {
+      $data['err'] = $this->session->flashdata('err');
+
       $data['dosen'] = $this->model_dosen->getAll();
       $this->template->load('template', 'dosen/view', $data);
     }
@@ -18,7 +20,8 @@
     function add()
     {
       if (isset($_POST['submit'])) {
-        $this->model_dosen->save($this->input);
+        $err = $this->model_dosen->save($this->input);
+        $this->session->set_flashdata('err', $err);
         redirect('dosen');
       } else {
         $this->template->load('template', 'dosen/add');
@@ -31,17 +34,17 @@
         $this->model_dosen->update($this->input);
         redirect('dosen');
       } else {
-        $id_dosen     = $this->uri->segment(3);
-        $data['dosen']  = $this->model_dosen->getOne($id_dosen)->row_array();
+        $id     = $this->uri->segment(3);
+        $data['dosen']  = $this->model_dosen->getOne($id)->row_array();
         $this->template->load('template', 'dosen/edit', $data);
       }
     }
 
     function delete()
     {
-      $id_dosen = $this->uri->segment(3);
-      if (!empty($id_dosen)) {
-        $this->model_dosen->delete($id_dosen);
+      $id = $this->uri->segment(3);
+      if (!empty($id)) {
+        $this->model_dosen->delete($id);
       }
       redirect('dosen');
     }

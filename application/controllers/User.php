@@ -11,51 +11,11 @@
 			$this->load->model('model_user');
 		}
 
-		function data()
-		{
-
-			// nama table
-			$table      = 'view_user';
-			// nama PK
-			$primaryKey = 'id_user';
-			// list field yang mau ditampilkan
-			$columns    = array(
-				//tabel db(kolom di database) => dt(nama datatable di view)
-				array('db' => 'foto', 
-					  'dt' => 'foto',
-					  'formatter' => function($d) {
-					  		return "<img width='20px' src='".base_url()."/uploads/".$d."'>";
-					  }
-				),
-		        array('db' => 'nama_lengkap', 'dt' => 'nama_lengkap'),
-		        array('db' => 'nama_level', 'dt' => 'nama_level'),
-		        //untuk menampilkan aksi(edit/delete dengan parameter id user)
-		        array(
-		              'db' => 'id_user',
-		              'dt' => 'aksi',
-		              'formatter' => function($d) {
-		               		return anchor('user/edit/'.$d, '<i class="fa fa-edit"></i>', 'class="btn btn-xs btn-primary" data-placement="top" title="Edit"').' 
-		               		'.anchor('user/delete/'.$d, '<i class="fa fa-times fa fa-white"></i>', 'class="btn btn-xs btn-danger" data-placement="top" title="Delete"');
-		            }
-		        )
-		    );
-
-			$sql_details = array(
-				'user' => $this->db->username,
-				'pass' => $this->db->password,
-				'db'   => $this->db->database,
-				'host' => $this->db->hostname
-		    );
-
-		    echo json_encode(
-		     	SSP::simple($_GET, $sql_details, $table, $primaryKey, $columns)
-		     );
-
-		}
-
+		
 		function index()
 		{
-			$this->template->load('template', 'user/view');
+			$data['user'] = $this->model_user->getAll();
+      		$this->template->load('template', 'user/view', $data);
 		}
 
 		function add()

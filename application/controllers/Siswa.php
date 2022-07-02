@@ -91,7 +91,7 @@
 			$nim = $this->uri->segment(3);
 			if (!empty($nim)) {
 				$this->db->where('nim', $nim);
-				$this->db->delete('tbl_siswa');
+				$this->db->delete('tbl_mhs');
 			} 
 			redirect('siswa');
 		}
@@ -130,7 +130,7 @@
 					</tr>";
 
 			$this->db->where('kd_kelas', $kelas);
-			$siswa = $this->db->get('tbl_siswa');
+			$siswa = $this->db->get('tbl_mhs');
 			foreach ($siswa->result() as $row) {
 				echo "<tr>
 						<td class='text-center'>$row->nim</td>
@@ -150,7 +150,7 @@
 	        
 	        $kelas = $_POST['kelas'];
 	        $this->db->where('kd_kelas', $kelas);
-	        $siswa = $this->db->get('tbl_siswa');
+	        $siswa = $this->db->get('tbl_mhs');
 	        $no=2;
 	        foreach ($siswa->result() as $row){
 	            $objPHPExcel->getActiveSheet()->setCellValue('A'.$no, $row->nim);
@@ -168,7 +168,7 @@
 		{
 			$nim 					= $this->uri->segment(3);
 			$sql 					= "SELECT ts.nama, tm.nama_mapel, tn.nilai
-									  FROM tbl_nilai AS tn, tbl_jadwal AS tj, tbl_mapel AS tm, tbl_siswa AS ts
+									  FROM tbl_nilai AS tn, tbl_jadwal AS tj, tbl_mapel AS tm, tbl_mhs AS ts
 									  WHERE tn.id_jadwal = tj.id_jadwal AND tj.kd_mapel = tm.kd_mapel AND tn.nim = ts.nim AND tn.nim = '$nim'";
 			$data['nilai_siswa'] 	= $this->db->query($sql);
 			$this->template->load('template', 'siswa/nilai', $data);
@@ -266,7 +266,7 @@
 						</tr>";
 
 				$this->db->where('kd_kelas', $kelas);
-				$siswa = $this->db->get('tbl_siswa');
+				$siswa = $this->db->get('tbl_mhs');
 				foreach ($siswa->result() as $row) {
 					echo "<tr>
 							<td class='text-center'>$row->nim</td>
@@ -279,7 +279,7 @@
 		function aksi_naikkelas() {
 			$kelas 	= $_GET['kelas'];
 			$this->db->where('kd_kelas', $kelas);
-			$siswa = $this->db->get('tbl_siswa');
+			$siswa = $this->db->get('tbl_mhs');
 			foreach ($siswa->result() as $row) {
 				$nim = $row->nim;
 				print($nim);

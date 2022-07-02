@@ -19,12 +19,27 @@
                 <thead>
                     <tr>
                         <th>NO</th>
-                        <th>FOTO</th>
                         <th>NAMA LENGKAP</th>
                         <th>LEVEL</th>
                         <th>AKSI</th>
                     </tr>
                 </thead>
+
+                <?php
+                    $no = 1;
+                    foreach ($user->result() as $row) {
+                       echo "<tr>
+                                <td>$no</td>
+                                <td>$row->nama_lengkap</td>
+                                <td>$row->nama_level</td>
+                                <td>
+                                    <a href='/user/edit/$row->id_user' class='btn btn-xs btn-primary' data-placement='top'><i class='fa fa-edit'>Edit</i></a>
+                                    <a href='/user/delete/$row->id_user' class='btn btn-xs btn-danger' data-placement='top'><i class='fa fa-edit'>Delete</i></a>
+                                </td>
+                            </tr>";
+                        $no++;
+                    }
+                ?>
               </table>
 
             </div>
@@ -36,7 +51,6 @@
     </div>
     <!-- /.row -->
 </section>
-
 <!-- punya lama -->
 <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.0/jquery.dataTables.js"></script> -->
 <!-- <script src="https://cdn.datatables.net/1.10.12/js/dataTables.bootstrap.js"></script> -->
@@ -49,42 +63,3 @@
 <script src="<?php echo base_url(); ?>assets/bower_components/datatables.net/js/jquery.dataTables.min.js"></script>
 <script src="<?php echo base_url(); ?>assets/bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
 <link rel="stylesheet" href="<?php echo base_url(); ?>assets/bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css">
-
-<script>
-        $(document).ready(function() {
-            var t = $('#mytable').DataTable( {
-                "ajax": '<?php echo site_url('user/data'); ?>',
-                "order": [[ 1, 'asc' ]],
-                "columns": [
-                    {
-                        "data": null,
-                        "width": "50px",
-                        "class": "text-center",
-                        "orderable": false,
-                    },
-                    { 
-                        "data": "foto",
-                        "class": "text-center"
-                    },
-                    {
-                        "data": "nama_lengkap",
-                        "width": "150px",
-                    },
-                    { 
-                        "data": "nama_level",
-                    },
-                    { 
-                        "data": "aksi",
-                        "width": "80px",
-                        "class": "text-center"
-                    },
-                ]
-            } );
-               
-            t.on( 'order.dt search.dt', function () {
-                t.column(0, {search:'applied', order:'applied'}).nodes().each( function (cell, i) {
-                    cell.innerHTML = i+1;
-                } );
-            } ).draw();
-        } );
-</script>

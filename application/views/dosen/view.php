@@ -1,3 +1,8 @@
+<?php
+  if ($err) {
+    echo "<script>alert('"+$err+"')</script>";
+  }
+?>
 <section class="content">
     <div class="row">
         <div class="col-xs-12">
