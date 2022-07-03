@@ -4,23 +4,23 @@
 
           <div class="box box-primary">
             <div class="box-header with-border">
-                <h3 class="box-title">Form Edit Siswa</h3>
+                <h3 class="box-title">Form Edit Mahasiswa</h3>
             </div>
             <!-- /.box-header -->
             <!-- form start -->
             <?php
-                echo form_open_multipart('siswa/edit', 'role="form" class="form-horizontal"');
+                echo form_open_multipart('mahasiswa/edit', 'role="form" class="form-horizontal"');
             ?>
 
                 <div class="box-body">
                   
-                  <input type="hidden" value="<?php echo $siswa['id']; ?>" name="id" class="form-control">
+                  <input type="hidden" value="<?php echo $mahasiswa['id']; ?>" name="id" class="form-control">
 
                   <div class="form-group">
                       <label class="col-sm-2 control-label">NIM</label>
 
                       <div class="col-sm-9">
-                        <input type="text" value="<?php echo $siswa['nim']; ?>" name="nim" class="form-control" placeholder="Masukkan NIM">
+                        <input type="text" value="<?php echo $mahasiswa['nim']; ?>" name="nim" class="form-control" placeholder="Masukkan NIM">
                       </div>
                   </div>
 
@@ -28,7 +28,7 @@
                       <label class="col-sm-2 control-label">Nama</label>
 
                       <div class="col-sm-9">
-                        <input type="text" value="<?php echo $siswa['nama']; ?>" name="nama" class="form-control" placeholder="Masukkan Nama Lengkap">
+                        <input type="text" value="<?php echo $mahasiswa['nama_lengkap']; ?>" name="nama" class="form-control" placeholder="Masukkan Nama Lengkap">
                       </div>
                   </div>
 
@@ -36,11 +36,11 @@
                       <label class="col-sm-2 control-label">Tempat, Tgl Lahir</label>
 
                       <div class="col-sm-5">
-                        <input type="text" value="<?php echo $siswa['tempat_lahir']; ?>" name="tempat_lahir" class="form-control" placeholder="Tempat Lahir">
+                        <input type="text" value="<?php echo $mahasiswa['tmpt_lahir']; ?>" name="tempat_lahir" class="form-control" placeholder="Tempat Lahir">
                       </div>
 
                       <div class="col-sm-2">
-                        <input type="date" value="<?php echo $siswa['tanggal_lahir']; ?>" name="tanggal_lahir" class="form-control">
+                        <input type="date" value="<?php echo $mahasiswa['tgl_lahir']; ?>" name="tanggal_lahir" class="form-control">
                       </div>
                   </div>
 
@@ -49,7 +49,7 @@
 
                       <div class="col-sm-5">
                         <?php
-                          echo form_dropdown('gender', array('Pilih Gender', 'L'=>'Laki-Laki', 'P'=>'Perempuan'), $siswa['gender'], "class='form-control'");
+                          echo form_dropdown('gender', array('Pilih Gender', 'P'=>'Laki-Laki', 'W'=>'Perempuan'), $mahasiswa['gender'], "class='form-control'");
                         ?>
                       </div>
                   </div>
@@ -59,7 +59,7 @@
 
                       <div class="col-sm-5">
                         <?php
-                          echo cmb_dinamis('agama', 'tbl_agama', 'nama_agama', 'kd_agama', $siswa['kd_agama']);
+                          echo cmb_dinamis('agama', 'tbl_agama', 'nama_agama', 'kd_agama', $mahasiswa['kd_agama']);
                         ?>
                       </div>
                   </div>
@@ -68,8 +68,8 @@
                       <label class="col-sm-2 control-label">Foto</label>
 
                       <div class="col-sm-5">
+                        <img src="<?php echo base_url()."uploads/".$mahasiswa['foto']; ?>" width="150px" style="display:block;"><br>
                         <input type="file" name="userfile">
-                        <img src="<?php echo base_url()."/uploads/".$siswa['foto']; ?>" width="150px">
                       </div>
                   </div>
 
@@ -78,7 +78,7 @@
 
                       <div class="col-sm-5">
                         <?php
-                          echo cmb_dinamis('kelas', 'tbl_kelas', 'nama_kelas', 'kd_kelas', $siswa['kd_kelas']);
+                          echo cmb_dinamis('kelas', 'tbl_kelas', 'nama_kelas', 'kd_kelas', $mahasiswa['kd_kelas']);
                         ?>
                       </div>
                   </div>
@@ -92,7 +92,7 @@
 
                       <div class="col-sm-1">
                         <?php
-                          echo anchor('siswa', 'Kembali', array('class'=>'btn btn-danger btn-flat'));
+                          echo anchor('mahasiswa', 'Kembali', array('class'=>'btn btn-danger btn-flat'));
                         ?>
                       </div>
                   </div>

@@ -32,11 +32,12 @@
 			if (isset($_POST['submit'])) {
 				$uploadFoto = $this->upload_foto_mahasiswa();
 				$this->model_mahasiswa->update($uploadFoto);
-				redirect('siswa');
+				redirect('mahasiswa');
 			} else {
-				$id           = $this->uri->segment(3);
-				$data['siswa'] = $this->db->get_where('tbl_mhs', array('id' => $id))->row_array();
-				$this->template->load('template', 'siswa/edit', $data);
+				$id           		= $this->uri->segment(3);
+				$data['mahasiswa'] = $this->model_mahasiswa->getOne($id)->row_array();
+				print_r($data['mahasiswa']);
+				$this->template->load('template', 'mahasiswa/edit', $data);
 			}
 		}
 

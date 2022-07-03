@@ -63,7 +63,7 @@
 
                       <div class="col-sm-5">
                         <?php
-                          echo form_dropdown('gender', array('Pilih Gender', 'L'=>'Laki-Laki', 'P'=>'Perempuan'), null, "class='form-control'");
+                          echo form_dropdown('gender', array('Pilih Gender', 'P'=>'Laki-Laki', 'W'=>'Perempuan'), null, "class='form-control'");
                         ?>
                       </div>
                   </div>
@@ -105,7 +105,7 @@
 
                       <div class="col-sm-1">
                         <?php
-                          echo anchor('siswa', 'Kembali', array('class'=>'btn btn-danger btn-flat'));
+                          echo anchor('mahasiswa', 'Kembali', array('class'=>'btn btn-danger btn-flat'));
                         ?>
                       </div>
                   </div>

@@ -15,6 +15,17 @@
 		  $data = $this->db->query($sql);
 				return $data;
 		}
+		
+		function getOne($id)
+		{
+		  $sql = "SELECT tm.id, tm.nim, tu.nama_lengkap, tu.gender, tm.tmpt_lahir, 
+		  		tm.tgl_lahir, tm.kd_agama, tm.kd_kelas, tu.foto
+			FROM tbl_mahasiswa tm
+			LEFT JOIN tbl_user tu ON tu.id_user = tm.id_user
+			WHERE tm.id=".$id;
+		  $data = $this->db->query($sql);
+				return $data;
+		}
 
 		function save($foto)
 		{
