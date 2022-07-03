@@ -6,8 +6,6 @@
 		function __construct()
 		{
 			parent::__construct();
-			//checkAksesModule();
-			// $this->load->library('ssp');
 			$this->load->model('model_jadwal');
 		}
 
@@ -28,7 +26,12 @@
 
 		function add(Type $var = null)
 		{
-			# code...
+			if (isset($_POST['submit'])) {
+				$this->model_jadwal->save($this->input);
+				redirect('jadwal');
+			  } else {
+				$this->template->load('template', 'jadwal/add');
+			  }
 		}
 
 		function generate_jadwal()

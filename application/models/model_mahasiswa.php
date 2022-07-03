@@ -1,21 +1,44 @@
 <?php
 
-	class Model_siswa extends CI_Model
+	class Model_mahasiswa extends CI_Model
 	{
 
-		public $table ="tbl_mhs";
+		public $tableUser = "tbl_user";
+		public $table ="tbl_mahasiswa";
+
+		function getAll()
+		{
+		  $sql = "SELECT tm.id, tm.nim, tu.nama_lengkap, tu.gender, tm.tmpt_lahir, tm.tgl_lahir
+			FROM tbl_mahasiswa tm
+			LEFT JOIN tbl_user tu ON tu.id_user = tm.id_user
+		  ";
+		  $data = $this->db->query($sql);
+				return $data;
+		}
 
 		function save($foto)
 		{
-			$data = array(
+			$dataUser = array(
 				//tabel di database => name di form
-				'nim'           => $this->input->post('nim', TRUE),
-				'nama'          => $this->input->post('nama', TRUE),
-				'tanggal_lahir' => $this->input->post('tanggal_lahir', TRUE),
-				'tempat_lahir'  => $this->input->post('tempat_lahir', TRUE),
-				'gender'        => $this->input->post('gender', TRUE),
-				'kd_agama'	    => $this->input->post('agama', TRUE),
+				'nama_lengkap' 	=> $this->input->post('nama', TRUE),
+				'username'    	=> $this->input->post('username', TRUE),
+				'password'    	=> md5($this->input->post('password', TRUE)),
+				'id_level_user' => 5,
+				'gender'      	=> $this->input->post('gender', TRUE),
 				'foto'			=> $foto,
+			);
+	
+			$this->db->insert($this->tableUser, $dataUser);
+	
+			$this->db->where('username', $dataUser['username']);
+			$user = $this->db->get($this->tableUser)->row_array();
+
+			$data = array(
+				'id_user' 		=> $user['id_user'],
+				'nim'           => $this->input->post('nim', TRUE),
+				'tgl_lahir' 	=> $this->input->post('tanggal_lahir', TRUE),
+				'tmpt_lahir' 	=> $this->input->post('tempat_lahir', TRUE),
+				'kd_agama'	    => $this->input->post('agama', TRUE),
 				'kd_kelas'	    => $this->input->post('kelas', TRUE),
 			);
 			$this->db->insert($this->table, $data);

@@ -1,83 +1,37 @@
 <?php
 
-	class Siswa extends CI_Controller
+	class Mahasiswa extends CI_Controller
 	{
 		private $filename = "import_data"; // nama file .csv
 		
 		function __construct() 
 		{
 			parent::__construct();
-			//checkAksesModule();
-			$this->load->library('ssp');
-			$this->load->model('model_siswa');
-		}
-
-		function data()
-		{
-
-			// nama table
-			$table      = 'tbl_mhs';
-			// nama PK
-			$primaryKey = 'id';
-			// list field yang mau ditampilkan
-			$columns    = array(
-				//tabel db(kolom di database) => dt(nama datatable di view)
-				array('db' => 'foto', 
-					  'dt' => 'foto',
-					  'formatter' => function($d) {
-					  		return "<img width='20px' src='".base_url()."/uploads/".$d."'>";
-					  }
-				),
-				array('db' => 'id', 'dt' => 'id'),
-				array('db' => 'nim', 'dt' => 'nim'),
-		        array('db' => 'nama', 'dt' => 'nama'),
-		        array('db' => 'tempat_lahir', 'dt' => 'tempat_lahir'),
-		        array('db' => 'tanggal_lahir', 'dt' => 'tanggal_lahir'),
-		        //untuk menampilkan aksi(edit/delete dengan parameter nim siswa)
-		        array(
-		              'db' => 'id',
-		              'dt' => 'aksi',
-		              'formatter' => function($d) {
-		               		return anchor('siswa/edit/'.$d, '<i class="fa fa-edit"></i>', 'class="btn btn-xs btn-primary" data-placement="top" title="Edit"').' 
-		               		'.anchor('siswa/delete/'.$d, '<i class="fa fa-times fa fa-white"></i>', 'class="btn btn-xs btn-danger" data-placement="top" title="Delete"');
-		            }
-		        )
-		    );
-
-			$sql_details = array(
-				'user' => $this->db->username,
-				'pass' => $this->db->password,
-				'db'   => $this->db->database,
-				'host' => $this->db->hostname
-		    );
-
-		    echo json_encode(
-		     	SSP::simple($_GET, $sql_details, $table, $primaryKey, $columns)
-		     );
-
+			$this->load->model('model_mahasiswa');
 		}
 
 		function index()
 		{
-			$this->template->load('template', 'siswa/view');
+      		$data['mahasiswa'] = $this->model_mahasiswa->getAll();
+			$this->template->load('template', 'mahasiswa/view', $data);
 		}
 
 		function add()
 		{
 			if (isset($_POST['submit'])) {
-				$uploadFoto = $this->upload_foto_siswa();
-				$this->model_siswa->save($uploadFoto);
-				redirect('siswa');
+				$uploadFoto = $this->upload_foto_mahasiswa();
+				$this->model_mahasiswa->save($uploadFoto);
+				redirect('mahasiswa');
 			} else {
-				$this->template->load('template', 'siswa/add');
+				$this->template->load('template', 'mahasiswa/add');
 			}
 		}
 
 		function edit()
 		{
 			if (isset($_POST['submit'])) {
-				$uploadFoto = $this->upload_foto_siswa();
-				$this->model_siswa->update($uploadFoto);
+				$uploadFoto = $this->upload_foto_mahasiswa();
+				$this->model_mahasiswa->update($uploadFoto);
 				redirect('siswa');
 			} else {
 				$id           = $this->uri->segment(3);
@@ -96,7 +50,7 @@
 			redirect('siswa');
 		}
 
-		function upload_foto_siswa()
+		function upload_foto_mahasiswa()
 		{
 			//validasi foto yang di upload
 			$config['upload_path']          = './uploads/';
@@ -179,7 +133,7 @@
 		    
 		    if(isset($_POST['preview'])){ // Jika user menekan tombol Preview pada form
 		      // lakukan upload file dengan memanggil function upload yang ada di SiswaModel.php
-		      $uploadcsv = $this->model_siswa->upload_csv($this->filename);
+		      $uploadcsv = $this->model_mahasiswa->upload_csv($this->filename);
 		      
 		      if($uploadcsv['result'] == "success"){ // Jika proses upload sukses
 		        // Load plugin PHPExcel nya
@@ -246,7 +200,7 @@
 		      $numrow++; // Tambah 1 setiap kali looping
 		    }
 		    // Panggil fungsi insert_multiple yg telah kita buat sebelumnya di model
-		    $this->model_siswa->insert_multiple($data);
+		    $this->model_mahasiswa->insert_multiple($data);
 		    
 		    redirect("Siswa"); // Redirect ke halaman awal (ke controller siswa fungsi index)
 		  }

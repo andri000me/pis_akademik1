@@ -23,14 +23,14 @@
               <!-- small box -->
               <div class="small-box bg-red">
                 <div class="inner">
-                  <h3><?php echo $siswa['hasil']; ?></h3>
+                  <h3><?php echo $mahasiswa['hasil']; ?></h3>
 
                   <p>Mahasiswa</p>
                 </div>
                 <div class="icon">
                   <i class="fa fa-users"></i>
                 </div>
-                <a href="<?php echo site_url('siswa') ?>" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+                <a href="<?php echo site_url('mahasiswa') ?>" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
               </div>
             </div>
             <!-- ./col -->

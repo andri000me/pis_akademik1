@@ -8,8 +8,8 @@
 			$quser = 'SELECT COUNT(*) AS hasil FROM tbl_user';
 			$data['user'] = $this->db->query($quser)->row_array();
 
-			$qsiswa = 'SELECT COUNT(*) AS hasil FROM tbl_siswa';
-			$data['siswa'] = $this->db->query($qsiswa)->row_array();
+			$qsiswa = 'SELECT COUNT(*) AS hasil FROM tbl_mahasiswa';
+			$data['mahasiswa'] = $this->db->query($qsiswa)->row_array();
 
 			$qguru = 'SELECT COUNT(*) AS hasil FROM tbl_dosen';
 			$data['dosen'] = $this->db->query($qguru)->row_array();
