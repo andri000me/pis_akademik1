@@ -11,9 +11,9 @@
 
             <!-- button add -->
             <?php
+              if ($this->session->userdata('id_level_user') == 1) {
                 echo anchor('mahasiswa/add', '<button class="btn bg-navy btn-flat margin">Tambah Data</button>');
-                echo anchor('mahasiswa/form', '<button class="btn btn-warning btn-flat margin">Import Data</button>');
-                echo anchor('mahasiswa/naik_kelas', '<button class="btn btn-info btn-flat margin">Naik Kelas</button>');
+              }
             ?>
 
               <table id="mytable" class="table table-striped table-bordered table-hover table-full-width dataTable" cellspacing="0" width="100%">
@@ -25,25 +25,39 @@
                         <th>GENDER</th>
                         <th>TEMPAT LAHIR</th>
                         <th>TANGGAL LAHIR</th>
-                        <th>AKSI</th>
+                        <?php 
+                          if ($this->session->userdata('id_level_user') == 1) {
+                            echo "<th>AKSI</th>";
+                          }
+                        ?>
                     </tr>
                 </thead>
                 <?php
                     $no = 1;
                     foreach ($mahasiswa->result() as $row) {
                       $row->gender = $row->gender == 'P' ? 'Laki-Laki' : 'Perempuan';
-                      echo "<tr>
-                                <td>$no</td>
-                                <td>$row->nim</td>
-                                <td>$row->nama_lengkap</td>
-                                <td>$row->gender</td>
-                                <td>$row->tmpt_lahir</td>
-                                <td>$row->tgl_lahir</td>
-                                <td>
-                                    <a href='/mahasiswa/edit/$row->id' class='btn btn-xs btn-primary' data-placement='top'><i class='fa fa-edit'>Edit</i></a>
-                                    <a href='/mahasiswa/delete/$row->id' class='btn btn-xs btn-danger' data-placement='top'><i class='fa fa-edit'>Delete</i></a>
-                                </td>
-                            </tr>";
+                      $tr = "<tr>
+                          <td>$no</td>
+                          <td>$row->nim</td>
+                          <td>$row->nama_lengkap</td>
+                          <td>$row->gender</td>
+                          <td>$row->tmpt_lahir</td>
+                          <td>$row->tgl_lahir</td>
+                      ";
+                      
+                      if ($this->session->userdata('id_level_user') == 1) {
+                        $tr = $tr . "
+                          <td>
+                            <a href='/mahasiswa/edit/$row->id' class='btn btn-xs btn-primary' data-placement='top'><i class='fa fa-edit'>Edit</i></a>
+                            <a href='/mahasiswa/delete/$row->id' class='btn btn-xs btn-danger' data-placement='top'><i class='fa fa-edit'>Delete</i></a>
+                          </td>
+                        ";
+                      }
+
+                      $tr = $tr . "</tr>";
+                      
+                      echo $tr;
+
                       $no++;
                     }
                 ?>

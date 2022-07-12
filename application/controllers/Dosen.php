@@ -11,9 +11,15 @@
 
     function index()
     {
-      $data['err'] = $this->session->flashdata('err');
+      $filter = [];
+			
+			if ($this->session->userdata('id_level_user') == 6) {
+				$filter['kd_jurusan'] = $this->session->userdata('kd_jurusan');
+			}
 
-      $data['dosen'] = $this->model_dosen->getAll();
+      $data['err'] = $this->session->flashdata('err');
+      $data['id_level_user'] = $this->session->userdata('id_level_user');
+      $data['dosen'] = $this->model_dosen->getAll($filter);
       $this->template->load('template', 'dosen/view', $data);
     }
 

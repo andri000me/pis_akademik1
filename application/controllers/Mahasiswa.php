@@ -12,7 +12,13 @@
 
 		function index()
 		{
-      		$data['mahasiswa'] = $this->model_mahasiswa->getAll();
+			$filter = [];
+			
+			if ($this->session->userdata('id_level_user') == 5) {
+				$filter['kd_kelas'] = $this->session->userdata('kd_kelas');
+			}
+
+      		$data['mahasiswa'] = $this->model_mahasiswa->getAll($filter);
 			$this->template->load('template', 'mahasiswa/view', $data);
 		}
 

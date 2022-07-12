@@ -48,6 +48,16 @@
                       </div>
                   </div>
 
+                  <div class="form-group" id="col-jurusan" style="display: none;">
+                      <label class="col-sm-2 control-label">Jurusan</label>
+
+                      <div class="col-sm-5">
+                        <?php
+                          echo cmb_dinamis('jurusan', 'tbl_jurusan', 'nama_jurusan', 'kd_jurusan');
+                        ?>
+                      </div>
+                  </div>
+
                   <div class="form-group">
                       <label class="col-sm-2 control-label">Foto</label>
 
@@ -80,3 +90,21 @@
     </div>
     <!-- /.row -->
 </section>
+
+<script>
+  var select = document.getElementsByName('level_user');
+
+  select[0].addEventListener('change', function(el){
+    let level_user = (select[0].value);
+    if (level_user == 6) {
+      document.getElementById("col-jurusan").style.display = 'block';
+    } else {
+      document.getElementById("col-jurusan").style.display = 'none';
+    }
+  });
+
+  input.addEventListener('click',function(){
+      select.value = 2;
+      select.dispatchEvent(new Event('change'));
+  });
+</script>

@@ -17,6 +17,14 @@
 					LEFT JOIN tbl_user AS tu ON tu.id_user = td.id_user 
 					WHERE tj.id_tahun_akademik = " . $filter['id_tahun_akademik'];
 
+			if (array_key_exists('id_dosen', $filter)) {
+				$sql = $sql." AND tj.id_dosen=".$filter['id_dosen'];
+			}
+			
+			if (array_key_exists('kd_kelas', $filter)) {
+				$sql = $sql." AND tj.kd_kelas='".$filter['kd_kelas']."'";
+			}
+
 			$data = $this->db->query($sql);
 			return $data;
 		}
@@ -38,30 +46,56 @@
 	 		 return $jam_pelajaran;
 	 	}
 
+		function convertHari($hariKe) {
+			switch ($hariKe) {
+				case '0':
+					return 'Senin';
+					break;
+				case '1':
+					return 'Selasa';
+					break;
+				case '2':
+					return 'Rabu';
+					break;
+				case '3':
+					return 'Kamis';
+					break;
+				case '4':
+					return 'Jumat';
+					break;
+				case '5':
+					return 'Sabtu';
+					break;
+				case '6':
+					return 'Minggu';
+					break;
+			}
+		}
+
 	 	function addJadwal()
 	 	{
 			$semester		 = $this->input->post('semester');
 			// Ambil tahun akademik yang aktif
 			$tahunakademik 	 = $this->db->get_where('tbl_tahun_akademik', array('is_aktif' => 'Y'))->row_array();
 
-			// ambil kelas berdasarkan tingkatan dan jurusan
-			$kelasnya = $this->db->get_where('tbl_kelas', array('kd_jurusan' => $row->kd_jurusan, 'kd_tingkatan' => $row->kd_tingkatan));
+			// ambil kd_jurusan, kd_tingkatan dari tbl_kelas
+			$kd_kelas = $this->input->post('kelas', TRUE);
+			$kelas = $this->db->get_where('tbl_kelas', array('kd_kelas' => $kd_kelas), 1)->row();
 
-			foreach ($kelasnya->result() as $row_kelas) {
-				$data = array(
-					'id_tahun_akademik' => $tahunakademik['id_tahun_akademik'], 
-					'semester'			=> $semester,
-					'kd_jurusan'		=> $row->kd_jurusan, 
-					'kd_tingkatan'		=> $row->kd_tingkatan, //sama seperti kelas di akademik
-					'kd_kelas'			=> $row_kelas->kd_kelas, //sama seperti rombel di akademik
-					'kd_mapel'			=> $row->kd_mapel, 
-					'id_guru'			=> 0, 
-					'jam'				=> '', 
-					'kd_ruangan'		=> '000', 
-					'hari'				=> ''
-				);
-				$this->db->insert('tbl_jadwal', $data);
-			}
+			$data = array(
+				'id_tahun_akademik' => $tahunakademik['id_tahun_akademik'], 
+				'semester'			=> $semester,
+				'kd_jurusan'		=> $kelas->kd_jurusan, 
+				'kd_tingkatan'		=> $kelas->kd_tingkatan, 
+				'kd_kelas'			=> $kd_kelas,
+				'kd_mapel'			=> $this->input->post('mapel', TRUE),
+				'id_dosen'			=> intval($this->input->post('dosen', TRUE)), 
+				'kd_ruangan'		=> $this->input->post('ruangan', TRUE), 
+				'jam'				=> $this->input->post('jam', TRUE), 
+				'hari'				=> $this->convertHari($this->input->post('hari', TRUE)),
+			);
+
+			$this->db->insert('tbl_jadwal', $data);
 	 	}
 
 	}

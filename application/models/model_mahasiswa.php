@@ -6,25 +6,42 @@
 		public $tableUser = "tbl_user";
 		public $table ="tbl_mahasiswa";
 
-		function getAll()
+		function getAll($filter)
 		{
-		  $sql = "SELECT tm.id, tm.nim, tu.nama_lengkap, tu.gender, tm.tmpt_lahir, tm.tgl_lahir
+			$sql = "SELECT tm.id, tm.nim, tu.nama_lengkap, tu.gender, tm.tmpt_lahir, tm.tgl_lahir
 			FROM tbl_mahasiswa tm
 			LEFT JOIN tbl_user tu ON tu.id_user = tm.id_user
-		  ";
-		  $data = $this->db->query($sql);
-				return $data;
+			WHERE 1=1
+			";
+			
+			if (array_key_exists('kd_kelas', $filter)) {
+				$sql = $sql." AND tm.kd_kelas='".$filter['kd_kelas']."'";
+			}
+
+		  	$data = $this->db->query($sql);
+			return $data;
 		}
 		
 		function getOne($id)
 		{
-		  $sql = "SELECT tm.id, tm.nim, tu.nama_lengkap, tu.gender, tm.tmpt_lahir, 
-		  		tm.tgl_lahir, tm.kd_agama, tm.kd_kelas, tu.foto
-			FROM tbl_mahasiswa tm
-			LEFT JOIN tbl_user tu ON tu.id_user = tm.id_user
-			WHERE tm.id=".$id;
-		  $data = $this->db->query($sql);
-				return $data;
+		  	$sql = "SELECT tm.id, tm.nim, tu.nama_lengkap, tu.gender, tm.tmpt_lahir, 
+					tm.tgl_lahir, tm.kd_agama, tm.kd_kelas, tu.foto
+				FROM tbl_mahasiswa tm
+				LEFT JOIN tbl_user tu ON tu.id_user = tm.id_user
+				WHERE tm.id=".$id;
+		  	$data = $this->db->query($sql);
+			return $data;
+		}
+		
+		function getOneByIdUser($id_user)
+		{
+		  	$sql = "SELECT tm.id, tm.nim, tu.nama_lengkap, tu.gender, tm.tmpt_lahir, 
+					tm.tgl_lahir, tm.kd_agama, tm.kd_kelas, tu.foto
+				FROM tbl_mahasiswa tm
+				LEFT JOIN tbl_user tu ON tu.id_user = tm.id_user
+				WHERE tu.id_user=".$id_user;
+		  	$data = $this->db->query($sql);
+			return $data;
 		}
 
 		function save($foto)

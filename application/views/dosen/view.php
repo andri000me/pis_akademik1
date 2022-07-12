@@ -16,7 +16,9 @@
 
             <!-- button add -->
             <?php
+              if ($id_level_user == 1) {
                 echo anchor('dosen/add', '<button class="btn bg-navy btn-flat margin">Tambah Data</button>');
+              }
             ?>
 
               <table id="mytable" class="table table-striped table-bordered table-hover table-full-width dataTable" cellspacing="0" width="100%">
@@ -26,24 +28,39 @@
                         <th>NIDN</th>
                         <th>NAMA DOSEN</th>
                         <th>GENDER</th>
-                        <th>AKSI</th>
+                        <th>JURUSAN</th>
+                        <?php 
+                          if ($this->session->userdata('id_level_user') == 1) {
+                            echo "<th>AKSI</th>";
+                          }
+                        ?>
                     </tr>
                 </thead>
 
                 <?php
                     $no = 1;
                     foreach ($dosen->result() as $row) {
-                       echo "<tr>
+                      $tr = "<tr>
                                 <td>$no</td>
                                 <td>$row->nidn</td>
                                 <td>$row->nama_lengkap</td>
                                 <td>$row->gender</td>
-                                <td>
-                                    <a href='/dosen/edit/$row->id' class='btn btn-xs btn-primary' data-placement='top'><i class='fa fa-edit'>Edit</i></a>
-                                    <a href='/dosen/delete/$row->id' class='btn btn-xs btn-danger' data-placement='top'><i class='fa fa-edit'>Delete</i></a>
-                                </td>
+                                <td>$row->jurusan</td>
                             </tr>";
-                        $no++;
+                      if ($this->session->userdata('id_level_user') == 1) {
+                        $tr = $tr . "
+                          <td>
+                              <a href='/dosen/edit/$row->id' class='btn btn-xs btn-primary' data-placement='top'><i class='fa fa-edit'>Edit</i></a>
+                              <a href='/dosen/delete/$row->id' class='btn btn-xs btn-danger' data-placement='top'><i class='fa fa-edit'>Delete</i></a>
+                          </td>
+                        ";
+                      }
+
+                      $tr = $tr . "</tr>";
+                      
+                      echo $tr;
+
+                      $no++;
                     }
                 ?>
               </table>
