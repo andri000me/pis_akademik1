@@ -23,8 +23,8 @@
                         <th>NIM</th>
                         <th>NAMA</th>
                         <th>GENDER</th>
-                        <th>TEMPAT LAHIR</th>
-                        <th>TANGGAL LAHIR</th>
+                        <th>KELAS</th>
+                        <th>ANGKATAN</th>
                         <?php 
                           if ($this->session->userdata('id_level_user') == 1) {
                             echo "<th>AKSI</th>";
@@ -41,8 +41,8 @@
                           <td>$row->nim</td>
                           <td>$row->nama_lengkap</td>
                           <td>$row->gender</td>
-                          <td>$row->tmpt_lahir</td>
-                          <td>$row->tgl_lahir</td>
+                          <td>$row->kd_kelas</td>
+                          <td>$row->angkatan</td>
                       ";
                       
                       if ($this->session->userdata('id_level_user') == 1) {

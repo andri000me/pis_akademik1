@@ -42,7 +42,6 @@
 			} else {
 				$id           		= $this->uri->segment(3);
 				$data['mahasiswa'] = $this->model_mahasiswa->getOne($id)->row_array();
-				print_r($data['mahasiswa']);
 				$this->template->load('template', 'mahasiswa/edit', $data);
 			}
 		}

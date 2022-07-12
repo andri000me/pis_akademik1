@@ -15,6 +15,7 @@
                 <div class="box-body">
                   
                   <input type="hidden" value="<?php echo $mahasiswa['id']; ?>" name="id" class="form-control">
+                  <input type="hidden" value="<?php echo $mahasiswa['id_user']; ?>" name="id_user" class="form-control">
 
                   <div class="form-group">
                       <label class="col-sm-2 control-label">NIM</label>
@@ -79,6 +80,16 @@
                       <div class="col-sm-5">
                         <?php
                           echo cmb_dinamis('kelas', 'tbl_kelas', 'nama_kelas', 'kd_kelas', $mahasiswa['kd_kelas']);
+                        ?>
+                      </div>
+                  </div>
+
+                  <div class="form-group">
+                      <label class="col-sm-2 control-label">Angkatan</label>
+
+                      <div class="col-sm-5">
+                        <?php
+                          echo cmb_dinamis('angkatan', 'tbl_tingkatan_kelas', 'nama_tingkatan', 'nama_tingkatan', $mahasiswa['angkatan']);
                         ?>
                       </div>
                   </div>

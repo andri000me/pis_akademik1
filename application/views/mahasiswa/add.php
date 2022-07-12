@@ -97,6 +97,16 @@
                   </div>
 
                   <div class="form-group">
+                      <label class="col-sm-2 control-label">Angkatan</label>
+
+                      <div class="col-sm-5">
+                        <?php
+                          echo cmb_dinamis('angkatan', 'tbl_tingkatan_kelas', 'nama_tingkatan', 'nama_tingkatan');
+                        ?>
+                      </div>
+                  </div>
+
+                  <div class="form-group">
                       <label class="col-sm-2 control-label"></label>
 
                       <div class="col-sm-1">

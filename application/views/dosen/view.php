@@ -40,13 +40,14 @@
                 <?php
                     $no = 1;
                     foreach ($dosen->result() as $row) {
+                      $row->gender = $row->gender == 'P' ? 'Laki-Laki' : 'Perempuan';
                       $tr = "<tr>
                                 <td>$no</td>
                                 <td>$row->nidn</td>
                                 <td>$row->nama_lengkap</td>
                                 <td>$row->gender</td>
                                 <td>$row->jurusan</td>
-                            </tr>";
+                            ";
                       if ($this->session->userdata('id_level_user') == 1) {
                         $tr = $tr . "
                           <td>
