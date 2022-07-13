@@ -16,17 +16,19 @@
 			$filter = [
 				'id_tahun_akademik' => get_tahun_akademik('id_tahun_akademik')
 			];
-
-			if ($this->session->userdata('id_level_user') == 3) {
-				$filter['id_dosen'] = $this->session->userdata('id_dosen');
-			}
 			
 			if ($this->session->userdata('id_level_user') == 5) {
-				$filter['kd_kelas'] = $this->session->userdata('kd_kelas');
+				$filter['id_mahasiswa'] = $this->session->userdata('id_mhs');
+				$data['jadwal'] = $this->model_jadwal->getJadwalMahasiswa($filter);
+			} else {
+				if ($this->session->userdata('id_level_user') == 3) {
+					$filter['id_dosen'] = $this->session->userdata('id_dosen');
+				}
+
+				$data['jadwal'] = $this->model_jadwal->getJadwal($filter);
 			}
 			
 			$data['id_level_user'] = $this->session->userdata('id_level_user');
-			$data['jadwal'] = $this->model_jadwal->getJadwal($filter);
 			$this->template->load('template', 'jadwal/view', $data);
 		}
 

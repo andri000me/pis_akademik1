@@ -29,6 +29,29 @@
 			return $data;
 		}
 
+		function getJadwalMahasiswa($filter)
+		{
+			$sql = "SELECT tj.id, tj.kd_kelas, tju.nama_jurusan, tj.kd_mapel, 
+						tm.nama as nama_matkul, tm.sks, tu.nama_lengkap as nama_dosen,
+						tj.jam, tr.nama_ruangan, tj.hari, tj.semester 
+					FROM tbl_jadwal_mahasiswa AS tjm
+					LEFT JOIN tbl_jadwal AS tj ON tj.id = tjm.id_jadwal
+					LEFT JOIN tbl_jurusan AS tju ON tj.kd_jurusan = tju.kd_jurusan
+					LEFT JOIN tbl_ruangan AS tr ON tj.kd_ruangan = tr.kd_ruangan
+					LEFT JOIN tbl_mapel AS tm ON tj.kd_mapel = tm.kd_mapel
+					LEFT JOIN tbl_tingkatan_kelas AS ttk ON tj.kd_tingkatan = ttk.kd_tingkatan
+					LEFT JOIN tbl_dosen AS td ON td.id = tj.id_dosen
+					LEFT JOIN tbl_user AS tu ON tu.id_user = td.id_user 
+					WHERE tj.id_tahun_akademik = " . $filter['id_tahun_akademik'];
+
+			if (array_key_exists('id_mahasiswa', $filter)) {
+				$sql = $sql." AND tjm.id_mahasiswa=".$filter['id_mahasiswa'];
+			}
+
+			$data = $this->db->query($sql);
+			return $data;
+		}
+
 		function getDetailJadwal($id)
 		{
 			$sql = "SELECT tj.id, tj.kd_kelas, tju.nama_jurusan, tj.kd_mapel, 

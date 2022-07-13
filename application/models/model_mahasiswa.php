@@ -21,6 +21,20 @@
 		  	$data = $this->db->query($sql);
 			return $data;
 		}
+
+		function getListMahasiswaByIdDosen($id_dosen)
+		{
+			$sql = "SELECT tjm.id, tjm.id_jadwal, tjm.id_mahasiswa,
+				tm.nim, tu.nama_lengkap, tu.gender, tm.kd_kelas, tm.angkatan
+				FROM tbl_jadwal_mahasiswa AS tjm
+				LEFT JOIN tbl_jadwal AS tj ON tj.id = tjm.id_jadwal
+				LEFT JOIN tbl_mahasiswa AS tm ON tm.id = tjm.id_mahasiswa 
+				LEFT JOIN tbl_user AS tu ON tu.id_user = tm.id_user 
+				WHERE tj.id_dosen = " . $id_dosen;
+
+			$data = $this->db->query($sql);
+			return $data;
+		}
 		
 		function getOne($id)
 		{

@@ -14,11 +14,16 @@
 		{
 			$filter = [];
 			
-			if ($this->session->userdata('id_level_user') == 5) {
-				$filter['kd_kelas'] = $this->session->userdata('kd_kelas');
+			if ($this->session->userdata('id_level_user') == 3) {
+				$id_dosen = $this->session->userdata('id_dosen');
+				$data['mahasiswa'] = $this->model_mahasiswa->getListMahasiswaByIdDosen($id_dosen);
+			} else {
+				if ($this->session->userdata('id_level_user') == 5) {
+					$filter['kd_kelas'] = $this->session->userdata('kd_kelas');
+				}
+				$data['mahasiswa'] = $this->model_mahasiswa->getAll($filter);
 			}
 
-      		$data['mahasiswa'] = $this->model_mahasiswa->getAll($filter);
 			$this->template->load('template', 'mahasiswa/view', $data);
 		}
 

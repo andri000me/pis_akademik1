@@ -70,7 +70,7 @@
                                     <td>$row->nama_ruangan</td>
                                ";
 
-                            if ($this->session->userdata('id_level_user') == 1) {
+                            if (in_array($this->session->userdata('id_level_user'), array(1,3))) {
                                 $tr = $tr . "
                                     <td>
                                         <a href='/jadwal/detail/$row->id' class='btn btn-xs btn-primary' data-placement='top'><i class='fa fa-eye'></i></a>
