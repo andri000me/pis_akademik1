@@ -29,6 +29,24 @@
 			return $data;
 		}
 
+		function getDetailJadwal($id)
+		{
+			$sql = "SELECT tj.id, tj.kd_kelas, tju.nama_jurusan, tj.kd_mapel, 
+						tm.nama as nama_matkul, tm.sks, tu.nama_lengkap as nama_dosen,
+						tj.jam, tr.nama_ruangan, tj.hari, tj.semester 
+					FROM tbl_jadwal AS tj
+					LEFT JOIN tbl_jurusan AS tju ON tj.kd_jurusan = tju.kd_jurusan
+					LEFT JOIN tbl_ruangan AS tr ON tj.kd_ruangan = tr.kd_ruangan
+					LEFT JOIN tbl_mapel AS tm ON tj.kd_mapel = tm.kd_mapel
+					LEFT JOIN tbl_tingkatan_kelas AS ttk ON tj.kd_tingkatan = ttk.kd_tingkatan
+					LEFT JOIN tbl_dosen AS td ON td.id = tj.id_dosen
+					LEFT JOIN tbl_user AS tu ON tu.id_user = td.id_user 
+					WHERE tj.id = " . $id;
+
+			$data = $this->db->query($sql);
+			return $data;
+		}
+
 		function jamPelajaran() {
 	 		 $jam_pelajaran	= array(
             	'07.15 - 08.00' => '07.15 - 08.00',
@@ -98,6 +116,35 @@
 			$this->db->insert('tbl_jadwal', $data);
 	 	}
 
+		function getListMahasiswa($filter)
+		{
+			$sql = "SELECT tjm.id, tjm.id_jadwal, tjm.id_mahasiswa,
+				tm.nim, tu.nama_lengkap, tu.gender, tm.kd_kelas, tm.angkatan
+				FROM tbl_jadwal_mahasiswa AS tjm
+				LEFT JOIN tbl_jadwal AS tj ON tj.id = tjm.id_jadwal
+				LEFT JOIN tbl_mahasiswa AS tm ON tm.id = tjm.id_mahasiswa 
+				LEFT JOIN tbl_user AS tu ON tu.id_user = tm.id_user 
+				WHERE tjm.id_jadwal = " . $filter['id_jadwal'];
+
+			$data = $this->db->query($sql);
+			return $data;
+		}
+
+		function insertBatchJadwalMahasiswa($id_jadwal, $list_mahasiswa) {
+			$data = [];
+			foreach ($list_mahasiswa as $value) {
+				array_push($data, array(
+					'id_jadwal' => $id_jadwal,
+					'id_mahasiswa' => $value,
+				));
+			}
+			 
+			$this->db->insert_batch('tbl_jadwal_mahasiswa', $data);
+		}
+
+		function deleteJadwalMahasiswa($id) {
+			$this->db->delete('tbl_jadwal_mahasiswa', array('id' => $id));
+		}
 	}
 
 ?>

@@ -8,6 +8,7 @@
 			parent::__construct();
 			$this->load->model('model_jadwal');
 			$this->load->model('model_dosen');
+			$this->load->model('model_mahasiswa');
 		}
 
 		function index()
@@ -38,6 +39,50 @@
 				$data['list_dosen'] = $this->model_dosen->getAll();
 				$this->template->load('template', 'jadwal/add', $data);
 			  }
+		}
+
+		function detail()
+		{
+			$filter = [
+				'id_jadwal' => $this->uri->segment(3),
+			];
+			
+			$data['id_level_user'] = $this->session->userdata('id_level_user');
+			$data['jadwal'] = $this->model_jadwal->getDetailJadwal($filter['id_jadwal'])->row_array();;
+			$data['mahasiswa'] = $this->model_jadwal->getListMahasiswa($filter);
+			$this->template->load('template', 'jadwal/detail', $data);
+		}
+
+		function list_mahasiswa()
+		{	
+			$data['id_jadwal'] = $this->uri->segment(3);
+			$data['list_mahasiswa'] = $this->model_mahasiswa->getAll([]);
+			$this->template->load('template', 'jadwal/add-mahasiswa', $data);
+		}
+
+		function add_mahasiswa()
+		{
+			try {
+				$stream_clean = $this->security->xss_clean($this->input->raw_input_stream);
+				$request = json_decode($stream_clean);
+				$idJadwal = $request->id_jadwal;
+				$this->model_jadwal->insertBatchJadwalMahasiswa($idJadwal, $request->list_mahasiswa);
+				echo "OK";
+			} catch (\Throwable $th) {
+				return $this->output
+					->set_content_type('application/json')
+					->set_status_header(500)
+					->set_output(json_encode(array(
+							'error' => $th,
+					)));
+			}
+		}
+
+		function delete_mahasiswa() {
+			$id = $this->uri->segment(3);
+			$id_jadwal = $this->input->get('id_jadwal', TRUE);
+			$this->model_jadwal->deleteJadwalMahasiswa($id);
+			redirect('jadwal/detail/'.$id_jadwal);
 		}
 
 		function cetak_jadwal() {

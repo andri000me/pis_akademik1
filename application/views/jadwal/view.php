@@ -1,7 +1,7 @@
 <section class="content">
     <div class="row">
 
-        <div class="col-xs-12">
+        <!-- <div class="col-xs-12">
             <div class="box box-info">
                 <div class="box-header  with-border">
                 <table class="table table-bordered">
@@ -16,7 +16,7 @@
                 </table>
             </div>
             </div>
-        </div>
+        </div> -->
 
         <div class="col-xs-12">
 
@@ -46,13 +46,18 @@
                             <th>Hari</th>
                             <th>Jam</th>
                             <th>Ruang</th>
+                            <?php 
+                                if ($this->session->userdata('id_level_user') == 1) {
+                                    echo "<th>AKSI</th>";
+                                }
+                            ?>
                         </tr>
                     </thead>
 
                     <?php
                         $no = 1;
                         foreach ($jadwal->result() as $row) {
-                        echo "<tr>
+                            $tr = "<tr>
                                     <td>$no</td>
                                     <td>$row->kd_kelas</td>
                                     <td>$row->nama_jurusan</td>
@@ -63,7 +68,20 @@
                                     <td>$row->hari</td>
                                     <td>$row->jam</td>
                                     <td>$row->nama_ruangan</td>
-                                </tr>";
+                               ";
+
+                            if ($this->session->userdata('id_level_user') == 1) {
+                                $tr = $tr . "
+                                    <td>
+                                        <a href='/jadwal/detail/$row->id' class='btn btn-xs btn-primary' data-placement='top'><i class='fa fa-eye'></i></a>
+                                    </td>
+                                ";
+                            }
+    
+                            $tr = $tr . "</tr>";
+                            
+                            echo $tr;
+
                             $no++;
                         }
                     ?>
