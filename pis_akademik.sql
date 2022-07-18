@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Jun 25, 2022 at 09:49 AM
+-- Generation Time: Jul 18, 2022 at 01:24 PM
 -- Server version: 10.4.21-MariaDB
 -- PHP Version: 7.4.27
 
@@ -40,7 +40,7 @@ CREATE TABLE `tabel_menu` (
 --
 
 INSERT INTO `tabel_menu` (`id`, `nama_menu`, `link`, `icon`, `is_main_menu`) VALUES
-(1, 'Data Mahasiswa', 'siswa', 'fa fa-users', 0),
+(1, 'Data Mahasiswa', 'mahasiswa', 'fa fa-users', 0),
 (2, 'Data Dosen', 'dosen', 'fa fa-user-circle', 0),
 (3, 'Data Master', '#', 'fa fa-bars', 0),
 (4, 'Matakuliah', 'mapel', 'fa fa-book', 3),
@@ -58,7 +58,37 @@ INSERT INTO `tabel_menu` (`id`, `nama_menu`, `link`, `icon`, `is_main_menu`) VAL
 (16, 'Form Pembayaran', 'pembayaran', 'fa fa-dollar', 0),
 (17, 'Nilai', 'nilai', 'fa fa-archive', 0),
 (18, 'Laporan Nilai', 'laporan_nilai', 'fa fa-file-pdf-o', 0),
-(19, 'Dashboard', 'tampilan_utama', '', 0);
+(19, 'Dashboard', 'tampilan_utama', '', 0),
+(20, 'Absensi', 'absensi', '', 0);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tbl_absensi`
+--
+
+CREATE TABLE `tbl_absensi` (
+  `id` int(11) NOT NULL,
+  `id_jadwal` int(11) NOT NULL,
+  `id_mahasiswa` int(11) NOT NULL,
+  `pertemuan` int(11) NOT NULL,
+  `keterangan` tinyint(1) NOT NULL,
+  `tanggal` date NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `tbl_absensi`
+--
+
+INSERT INTO `tbl_absensi` (`id`, `id_jadwal`, `id_mahasiswa`, `pertemuan`, `keterangan`, `tanggal`) VALUES
+(29, 1, 2, 1, 1, '2022-07-18'),
+(30, 1, 5, 1, 1, '2022-07-18'),
+(31, 1, 2, 2, 1, '2022-07-18'),
+(32, 1, 5, 2, 3, '2022-07-18'),
+(33, 1, 2, 3, 1, '2022-07-18'),
+(34, 1, 5, 3, 1, '2022-07-18'),
+(35, 1, 2, 4, 2, '2022-07-18'),
+(36, 1, 5, 4, 1, '2022-07-18');
 
 -- --------------------------------------------------------
 
@@ -93,17 +123,19 @@ INSERT INTO `tbl_agama` (`kd_agama`, `nama_agama`) VALUES
 CREATE TABLE `tbl_dosen` (
   `id` int(11) NOT NULL,
   `id_user` int(11) NOT NULL,
-  `nidn` varchar(11) NOT NULL
+  `nidn` varchar(11) NOT NULL,
+  `kd_jurusan` varchar(5) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `tbl_dosen`
 --
 
-INSERT INTO `tbl_dosen` (`id`, `id_user`, `nidn`) VALUES
-(1, 11, 'N111921136'),
-(2, 12, 'N123456789'),
-(3, 13, 'N123456788');
+INSERT INTO `tbl_dosen` (`id`, `id_user`, `nidn`, `kd_jurusan`) VALUES
+(1, 11, 'N111921136', 'TI'),
+(2, 12, 'N123456789', 'TI'),
+(3, 13, 'N123456788', 'TI'),
+(4, 51, 'N123400912', 'UMUM');
 
 -- --------------------------------------------------------
 
@@ -122,15 +154,37 @@ CREATE TABLE `tbl_jadwal` (
   `id_dosen` int(11) NOT NULL,
   `jam` varchar(30) NOT NULL,
   `kd_ruangan` varchar(10) NOT NULL,
-  `hari` varchar(10) NOT NULL
+  `hari` varchar(10) NOT NULL,
+  `pertemuan_ke` int(11) NOT NULL DEFAULT 1
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `tbl_jadwal`
 --
 
-INSERT INTO `tbl_jadwal` (`id`, `id_tahun_akademik`, `semester`, `kd_jurusan`, `kd_tingkatan`, `kd_kelas`, `kd_mapel`, `id_dosen`, `jam`, `kd_ruangan`, `hari`) VALUES
-(1, 1, 'ganjil', 'TI', '01', 'IF-6K', '0001', 1, '07.15 - 08.00', '01', 'Senin');
+INSERT INTO `tbl_jadwal` (`id`, `id_tahun_akademik`, `semester`, `kd_jurusan`, `kd_tingkatan`, `kd_kelas`, `kd_mapel`, `id_dosen`, `jam`, `kd_ruangan`, `hari`, `pertemuan_ke`) VALUES
+(1, 5, 'genap', 'TI', '01', 'IF-6K', '0001', 1, '07.15 - 08.00', '01', 'Senin', 5),
+(2, 5, 'genap', 'TI', '01', 'IF-2K', '0003', 2, '10.00 - 10.45', '02', 'Rabu', 1);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tbl_jadwal_mahasiswa`
+--
+
+CREATE TABLE `tbl_jadwal_mahasiswa` (
+  `id` int(11) NOT NULL,
+  `id_mahasiswa` int(11) NOT NULL,
+  `id_jadwal` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `tbl_jadwal_mahasiswa`
+--
+
+INSERT INTO `tbl_jadwal_mahasiswa` (`id`, `id_mahasiswa`, `id_jadwal`) VALUES
+(2, 2, 1),
+(3, 5, 1);
 
 -- --------------------------------------------------------
 
@@ -139,6 +193,7 @@ INSERT INTO `tbl_jadwal` (`id`, `id_tahun_akademik`, `semester`, `kd_jurusan`, `
 --
 
 CREATE TABLE `tbl_jurusan` (
+  `id` int(11) NOT NULL,
   `kd_jurusan` varchar(5) NOT NULL,
   `nama_jurusan` varchar(30) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -147,10 +202,11 @@ CREATE TABLE `tbl_jurusan` (
 -- Dumping data for table `tbl_jurusan`
 --
 
-INSERT INTO `tbl_jurusan` (`kd_jurusan`, `nama_jurusan`) VALUES
-('AK', 'Akuntansi'),
-('J1123', 'Teknik Mesin'),
-('TI', 'Teknik Informatika');
+INSERT INTO `tbl_jurusan` (`id`, `kd_jurusan`, `nama_jurusan`) VALUES
+(1, 'AK', 'Akuntansi'),
+(2, 'J1123', 'Teknik Mesin'),
+(3, 'TI', 'Teknik Informatika'),
+(4, 'UMUM', 'Umum');
 
 -- --------------------------------------------------------
 
@@ -159,6 +215,7 @@ INSERT INTO `tbl_jurusan` (`kd_jurusan`, `nama_jurusan`) VALUES
 --
 
 CREATE TABLE `tbl_kelas` (
+  `id` int(11) NOT NULL,
   `kd_kelas` varchar(5) NOT NULL,
   `nama_kelas` varchar(30) NOT NULL,
   `kd_tingkatan` varchar(5) NOT NULL,
@@ -169,51 +226,10 @@ CREATE TABLE `tbl_kelas` (
 -- Dumping data for table `tbl_kelas`
 --
 
-INSERT INTO `tbl_kelas` (`kd_kelas`, `nama_kelas`, `kd_tingkatan`, `kd_jurusan`) VALUES
-('IF-2K', 'IF-2K', '01', 'TI'),
-('IF-6K', 'IF-6K', '01', 'TI');
-
--- --------------------------------------------------------
-
---
--- Table structure for table `tbl_kurikulum`
---
-
-CREATE TABLE `tbl_kurikulum` (
-  `id_kurikulum` int(11) NOT NULL,
-  `nama_kurikulum` varchar(30) NOT NULL,
-  `is_aktif` enum('Y','N') NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `tbl_kurikulum`
---
-
-INSERT INTO `tbl_kurikulum` (`id_kurikulum`, `nama_kurikulum`, `is_aktif`) VALUES
-(1, 'Kurikulum 2013 (K13)', 'Y'),
-(2, 'Kurikulum 2006 (KTSP)', 'N'),
-(3, 'Kurikulum 2004 (KBK)', 'N');
-
--- --------------------------------------------------------
-
---
--- Table structure for table `tbl_kurikulum_detail`
---
-
-CREATE TABLE `tbl_kurikulum_detail` (
-  `id_kurikulum_detail` int(11) NOT NULL,
-  `id_kurikulum` int(11) NOT NULL,
-  `kd_mapel` varchar(5) NOT NULL,
-  `kd_jurusan` varchar(5) NOT NULL,
-  `kd_tingkatan` varchar(5) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `tbl_kurikulum_detail`
---
-
-INSERT INTO `tbl_kurikulum_detail` (`id_kurikulum_detail`, `id_kurikulum`, `kd_mapel`, `kd_jurusan`, `kd_tingkatan`) VALUES
-(1, 1, '0001', 'TI', '01');
+INSERT INTO `tbl_kelas` (`id`, `kd_kelas`, `nama_kelas`, `kd_tingkatan`, `kd_jurusan`) VALUES
+(1, 'IF-2K', 'IF-2K', '01', 'TI'),
+(2, 'IF-6K', 'IF-6K', '01', 'TI'),
+(3, 'IF-6C', 'IF-6C', '01', 'TI');
 
 -- --------------------------------------------------------
 
@@ -234,7 +250,36 @@ INSERT INTO `tbl_level_user` (`id_level_user`, `nama_level`) VALUES
 (1, 'Admin'),
 (2, 'Walikelas'),
 (3, 'Guru'),
-(4, 'Keuangan');
+(4, 'Keuangan'),
+(5, 'mahasiswa'),
+(6, 'Prodi');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tbl_mahasiswa`
+--
+
+CREATE TABLE `tbl_mahasiswa` (
+  `id` int(11) NOT NULL,
+  `nim` varchar(12) NOT NULL,
+  `id_user` int(11) NOT NULL,
+  `tgl_lahir` date NOT NULL,
+  `tmpt_lahir` varchar(30) NOT NULL,
+  `kd_agama` int(11) NOT NULL,
+  `kd_kelas` varchar(5) NOT NULL,
+  `angkatan` varchar(4) NOT NULL DEFAULT '2022'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `tbl_mahasiswa`
+--
+
+INSERT INTO `tbl_mahasiswa` (`id`, `nim`, `id_user`, `tgl_lahir`, `tmpt_lahir`, `kd_agama`, `kd_kelas`, `angkatan`) VALUES
+(2, 'D111921133', 49, '1998-01-03', 'Bandung', 1, 'IF-6K', '2019'),
+(3, 'D111921135', 50, '1999-11-25', 'Bandung', 1, 'IF-2K', '2021'),
+(4, 'D111921120', 58, '1998-01-01', 'Bandung', 1, 'IF-2K', '2021'),
+(5, 'D111921101', 59, '1997-01-13', 'Jakarta', 1, 'IF-6K', '2019');
 
 -- --------------------------------------------------------
 
@@ -243,6 +288,7 @@ INSERT INTO `tbl_level_user` (`id_level_user`, `nama_level`) VALUES
 --
 
 CREATE TABLE `tbl_mapel` (
+  `id` int(11) NOT NULL,
   `kd_mapel` varchar(5) NOT NULL,
   `sks` int(1) NOT NULL,
   `nama` varchar(30) NOT NULL
@@ -252,33 +298,10 @@ CREATE TABLE `tbl_mapel` (
 -- Dumping data for table `tbl_mapel`
 --
 
-INSERT INTO `tbl_mapel` (`kd_mapel`, `sks`, `nama`) VALUES
-('0001', 3, 'Proyek 2');
-
--- --------------------------------------------------------
-
---
--- Table structure for table `tbl_mhs`
---
-
-CREATE TABLE `tbl_mhs` (
-  `id` int(11) NOT NULL,
-  `nim` varchar(11) NOT NULL,
-  `nama` varchar(40) NOT NULL,
-  `gender` enum('L','P') NOT NULL,
-  `tanggal_lahir` date NOT NULL,
-  `tempat_lahir` varchar(30) NOT NULL,
-  `kd_agama` int(2) NOT NULL,
-  `foto` text NOT NULL,
-  `kd_kelas` varchar(5) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `tbl_mhs`
---
-
-INSERT INTO `tbl_mhs` (`id`, `nim`, `nama`, `gender`, `tanggal_lahir`, `tempat_lahir`, `kd_agama`, `foto`, `kd_kelas`) VALUES
-(1, 'D111921120', 'Muhammad Athallah Zuhryo', 'L', '2022-06-04', 'Banda Aceh', 1, '', 'IF-6K');
+INSERT INTO `tbl_mapel` (`id`, `kd_mapel`, `sks`, `nama`) VALUES
+(1, '0001', 3, 'Proyek 2'),
+(2, '0002', 3, 'Cloud Computing'),
+(3, '0003', 2, 'Matematika Diskrit');
 
 -- --------------------------------------------------------
 
@@ -300,6 +323,25 @@ CREATE TABLE `tbl_nilai` (
 INSERT INTO `tbl_nilai` (`id_nilai`, `id_jadwal`, `nim`, `nilai`) VALUES
 (1, 1, '18SI1000', 100),
 (9, 1, 'D111921142', 89);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tbl_prodi`
+--
+
+CREATE TABLE `tbl_prodi` (
+  `id` int(11) NOT NULL,
+  `id_user` int(11) NOT NULL,
+  `kd_jurusan` varchar(5) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `tbl_prodi`
+--
+
+INSERT INTO `tbl_prodi` (`id`, `id_user`, `kd_jurusan`) VALUES
+(2, 57, 'TI');
 
 -- --------------------------------------------------------
 
@@ -330,7 +372,16 @@ INSERT INTO `tbl_riwayat_kelas` (`id_riwayat`, `kd_kelas`, `nim`, `id_tahun_akad
 (9, '7-A1', '', 1),
 (10, '8-A1', '14.12.8199', 1),
 (11, '8-B1', '14.12.8198', 1),
-(12, 'IF-6K', 'D111921142', 5);
+(12, 'IF-6K', 'D111921142', 5),
+(0, 'IF-6K', 'D111921128', 5),
+(0, 'IF-6K', 'D111921140', 5),
+(0, 'IF-6K', 'D111921127', 5),
+(0, 'IF-6K', 'D111921125', 5),
+(0, 'IF-2K', 'D111921127', 5),
+(0, 'IF-6K', 'D111921136', 5),
+(0, 'IF-6K', 'D111921136', 5),
+(0, 'IF-2K', 'D111921135', 5),
+(0, 'IF-2K', 'D111921120', 5);
 
 -- --------------------------------------------------------
 
@@ -339,6 +390,7 @@ INSERT INTO `tbl_riwayat_kelas` (`id_riwayat`, `kd_kelas`, `nim`, `id_tahun_akad
 --
 
 CREATE TABLE `tbl_ruangan` (
+  `id` int(11) NOT NULL,
   `kd_ruangan` varchar(10) NOT NULL,
   `nama_ruangan` varchar(30) NOT NULL,
   `kapasitas` int(255) NOT NULL
@@ -348,34 +400,9 @@ CREATE TABLE `tbl_ruangan` (
 -- Dumping data for table `tbl_ruangan`
 --
 
-INSERT INTO `tbl_ruangan` (`kd_ruangan`, `nama_ruangan`, `kapasitas`) VALUES
-('01', 'LabKom-01', 30),
-('02', 'LabKOm-02', 23);
-
--- --------------------------------------------------------
-
---
--- Table structure for table `tbl_siswa`
---
-
-CREATE TABLE `tbl_siswa` (
-  `nim` varchar(11) NOT NULL,
-  `nama` varchar(40) NOT NULL,
-  `gender` enum('L','P') NOT NULL,
-  `tanggal_lahir` date NOT NULL,
-  `tempat_lahir` varchar(30) NOT NULL,
-  `kd_agama` int(2) NOT NULL,
-  `foto` text NOT NULL,
-  `kd_kelas` varchar(5) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `tbl_siswa`
---
-
-INSERT INTO `tbl_siswa` (`nim`, `nama`, `gender`, `tanggal_lahir`, `tempat_lahir`, `kd_agama`, `foto`, `kd_kelas`) VALUES
-('18SI1000', 'Muhammad Athallah Zuhry', 'L', '1996-12-19', 'Banda Aceh', 1, 'user-siluet.jpg', 'IF-6K'),
-('D111921142', 'Wildan', '', '2001-01-12', 'Bandung', 1, '', 'IF-6K');
+INSERT INTO `tbl_ruangan` (`id`, `kd_ruangan`, `nama_ruangan`, `kapasitas`) VALUES
+(1, '01', 'LabKom-01', 30),
+(2, '02', 'LabKOm-02', 23);
 
 -- --------------------------------------------------------
 
@@ -406,6 +433,7 @@ INSERT INTO `tbl_tahun_akademik` (`id_tahun_akademik`, `tahun_akademik`, `is_akt
 --
 
 CREATE TABLE `tbl_tingkatan_kelas` (
+  `id` int(11) NOT NULL,
   `kd_tingkatan` varchar(5) NOT NULL,
   `nama_tingkatan` varchar(30) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -414,8 +442,11 @@ CREATE TABLE `tbl_tingkatan_kelas` (
 -- Dumping data for table `tbl_tingkatan_kelas`
 --
 
-INSERT INTO `tbl_tingkatan_kelas` (`kd_tingkatan`, `nama_tingkatan`) VALUES
-('01', '2019');
+INSERT INTO `tbl_tingkatan_kelas` (`id`, `kd_tingkatan`, `nama_tingkatan`) VALUES
+(1, '01', '2019'),
+(2, '02', '2020'),
+(3, '03', '2021'),
+(4, '04', '2022');
 
 -- --------------------------------------------------------
 
@@ -444,7 +475,14 @@ INSERT INTO `tbl_user` (`id_user`, `nama_lengkap`, `username`, `password`, `id_l
 (10, 'Adit', 'adit', 'e10adc3949ba59abbe56e057f20f883e', 1, NULL, ''),
 (11, 'Eriawan Hidayat', 'eri', 'e10adc3949ba59abbe56e057f20f883e', 3, 'P', ''),
 (12, 'Dosen Satu S.T', 'dosensatu', 'e10adc3949ba59abbe56e057f20f883e', 3, 'P', ''),
-(13, 'Dosen Dua S.T', 'dosendua', 'e10adc3949ba59abbe56e057f20f883e', 3, 'W', '');
+(13, 'Dosen Dua S.T', 'dosendua', 'e10adc3949ba59abbe56e057f20f883e', 3, 'W', ''),
+(15, 'Adit Rizky Muhidin Al Faris', 'Husky', 'e10adc3949ba59abbe56e057f20f883e', 5, 'P', ''),
+(49, 'Raisa', 'raisa', 'e10adc3949ba59abbe56e057f20f883e', 5, 'W', 'jujur-removebg-preview1.png'),
+(50, 'Opik Kun', 'opik', 'e10adc3949ba59abbe56e057f20f883e', 5, 'P', '1200px-Svelte_Logo_svg3.png'),
+(51, 'Dosen Umum', 'dosenumum', 'e10adc3949ba59abbe56e057f20f883e', 3, 'W', ''),
+(57, 'Wildan Miftahudin', 'wili', 'e10adc3949ba59abbe56e057f20f883e', 6, NULL, ''),
+(58, 'Firman Mardianto', 'firman', 'e10adc3949ba59abbe56e057f20f883e', 5, 'P', ''),
+(59, 'Bill To Gate', 'bill', 'e10adc3949ba59abbe56e057f20f883e', 5, '', '');
 
 -- --------------------------------------------------------
 
@@ -478,7 +516,13 @@ INSERT INTO `tbl_user_rule` (`id_rule`, `id_menu`, `id_level_user`) VALUES
 (17, 11, 3),
 (19, 17, 3),
 (21, 12, 3),
-(23, 4, 1);
+(23, 4, 1),
+(0, 11, 5),
+(25, 19, 6),
+(0, 1, 6),
+(0, 2, 6),
+(0, 1, 3),
+(0, 1, 5);
 
 -- --------------------------------------------------------
 
@@ -513,69 +557,18 @@ INSERT INTO `tbl_walikelas` (`id_walikelas`, `id_guru`, `id_tahun_akademik`, `kd
 -- --------------------------------------------------------
 
 --
--- Stand-in structure for view `view_kelas`
--- (See below for the actual view)
+-- Table structure for table `view_user`
 --
-CREATE TABLE `view_kelas` (
-`kd_kelas` varchar(5)
-,`nama_kelas` varchar(30)
-,`kd_tingkatan` varchar(5)
-,`kd_jurusan` varchar(5)
-,`nama_tingkatan` varchar(30)
-,`nama_jurusan` varchar(30)
-);
 
--- --------------------------------------------------------
-
---
--- Stand-in structure for view `view_user`
--- (See below for the actual view)
---
 CREATE TABLE `view_user` (
-`id_user` int(11)
-,`nama_lengkap` varchar(40)
-,`username` varchar(30)
-,`password` varchar(40)
-,`id_level_user` int(11)
-,`foto` text
-,`nama_level` varchar(30)
-);
-
--- --------------------------------------------------------
-
---
--- Stand-in structure for view `view_walikelas`
--- (See below for the actual view)
---
-CREATE TABLE `view_walikelas` (
-);
-
--- --------------------------------------------------------
-
---
--- Structure for view `view_kelas`
---
-DROP TABLE IF EXISTS `view_kelas`;
-
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `view_kelas`  AS SELECT `tk`.`kd_kelas` AS `kd_kelas`, `tk`.`nama_kelas` AS `nama_kelas`, `tk`.`kd_tingkatan` AS `kd_tingkatan`, `tk`.`kd_jurusan` AS `kd_jurusan`, `ttk`.`nama_tingkatan` AS `nama_tingkatan`, `tj`.`nama_jurusan` AS `nama_jurusan` FROM ((`tbl_kelas` `tk` join `tbl_tingkatan_kelas` `ttk`) join `tbl_jurusan` `tj`) WHERE `tk`.`kd_tingkatan` = `ttk`.`kd_tingkatan` AND `tk`.`kd_jurusan` = `tj`.`kd_jurusan` ;
-
--- --------------------------------------------------------
-
---
--- Structure for view `view_user`
---
-DROP TABLE IF EXISTS `view_user`;
-
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `view_user`  AS SELECT `tu`.`id_user` AS `id_user`, `tu`.`nama_lengkap` AS `nama_lengkap`, `tu`.`username` AS `username`, `tu`.`password` AS `password`, `tu`.`id_level_user` AS `id_level_user`, `tu`.`foto` AS `foto`, `tlu`.`nama_level` AS `nama_level` FROM (`tbl_user` `tu` join `tbl_level_user` `tlu`) WHERE `tu`.`id_level_user` = `tlu`.`id_level_user` ;
-
--- --------------------------------------------------------
-
---
--- Structure for view `view_walikelas`
---
-DROP TABLE IF EXISTS `view_walikelas`;
-
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `view_walikelas`  AS SELECT `tg`.`nama_guru` AS `nama_guru`, `tk`.`nama_kelas` AS `nama_kelas`, `tw`.`id_walikelas` AS `id_walikelas`, `tw`.`id_tahun_akademik` AS `id_tahun_akademik`, `tj`.`nama_jurusan` AS `nama_jurusan`, `ttk`.`nama_tingkatan` AS `nama_tingkatan`, `tta`.`tahun_akademik` AS `tahun_akademik` FROM (((((`tbl_walikelas` `tw` join `tbl_kelas` `tk`) join `tbl_guru` `tg`) join `tbl_jurusan` `tj`) join `tbl_tingkatan_kelas` `ttk`) join `tbl_tahun_akademik` `tta`) WHERE `tw`.`kd_kelas` = `tk`.`kd_kelas` AND `tw`.`id_guru` = `tg`.`id_guru` AND `tk`.`kd_jurusan` = `tj`.`kd_jurusan` AND `tk`.`kd_tingkatan` = `ttk`.`kd_tingkatan` AND `tw`.`id_tahun_akademik` = `tta`.`id_tahun_akademik` ;
+  `id_user` int(11) DEFAULT NULL,
+  `nama_lengkap` varchar(40) DEFAULT NULL,
+  `username` varchar(30) DEFAULT NULL,
+  `password` varchar(40) DEFAULT NULL,
+  `id_level_user` int(11) DEFAULT NULL,
+  `foto` text DEFAULT NULL,
+  `nama_level` varchar(30) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Indexes for dumped tables
@@ -588,17 +581,17 @@ ALTER TABLE `tabel_menu`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `tbl_agama`
+-- Indexes for table `tbl_absensi`
 --
-ALTER TABLE `tbl_agama`
-  ADD PRIMARY KEY (`kd_agama`);
+ALTER TABLE `tbl_absensi`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `tbl_dosen`
 --
 ALTER TABLE `tbl_dosen`
   ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `idx_dosen_nidn` (`nidn`);
+  ADD UNIQUE KEY `nidn` (`nidn`);
 
 --
 -- Indexes for table `tbl_jadwal`
@@ -607,28 +600,24 @@ ALTER TABLE `tbl_jadwal`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `tbl_jadwal_mahasiswa`
+--
+ALTER TABLE `tbl_jadwal_mahasiswa`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `tbl_jurusan`
 --
 ALTER TABLE `tbl_jurusan`
-  ADD PRIMARY KEY (`kd_jurusan`);
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `kd_jurusan` (`kd_jurusan`);
 
 --
 -- Indexes for table `tbl_kelas`
 --
 ALTER TABLE `tbl_kelas`
-  ADD PRIMARY KEY (`kd_kelas`);
-
---
--- Indexes for table `tbl_kurikulum`
---
-ALTER TABLE `tbl_kurikulum`
-  ADD PRIMARY KEY (`id_kurikulum`);
-
---
--- Indexes for table `tbl_kurikulum_detail`
---
-ALTER TABLE `tbl_kurikulum_detail`
-  ADD PRIMARY KEY (`id_kurikulum_detail`);
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `kd_kelas` (`kd_kelas`);
 
 --
 -- Indexes for table `tbl_level_user`
@@ -637,41 +626,31 @@ ALTER TABLE `tbl_level_user`
   ADD PRIMARY KEY (`id_level_user`);
 
 --
+-- Indexes for table `tbl_mahasiswa`
+--
+ALTER TABLE `tbl_mahasiswa`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `idx_mhs_nim` (`nim`);
+
+--
 -- Indexes for table `tbl_mapel`
 --
 ALTER TABLE `tbl_mapel`
-  ADD PRIMARY KEY (`kd_mapel`);
-
---
--- Indexes for table `tbl_mhs`
---
-ALTER TABLE `tbl_mhs`
   ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `nim` (`nim`);
+  ADD UNIQUE KEY `kd_mapel` (`kd_mapel`);
 
 --
--- Indexes for table `tbl_nilai`
+-- Indexes for table `tbl_prodi`
 --
-ALTER TABLE `tbl_nilai`
-  ADD PRIMARY KEY (`id_nilai`);
-
---
--- Indexes for table `tbl_riwayat_kelas`
---
-ALTER TABLE `tbl_riwayat_kelas`
-  ADD PRIMARY KEY (`id_riwayat`);
+ALTER TABLE `tbl_prodi`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `tbl_ruangan`
 --
 ALTER TABLE `tbl_ruangan`
-  ADD PRIMARY KEY (`kd_ruangan`);
-
---
--- Indexes for table `tbl_siswa`
---
-ALTER TABLE `tbl_siswa`
-  ADD PRIMARY KEY (`nim`);
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `kd_ruangan` (`kd_ruangan`);
 
 --
 -- Indexes for table `tbl_tahun_akademik`
@@ -683,7 +662,8 @@ ALTER TABLE `tbl_tahun_akademik`
 -- Indexes for table `tbl_tingkatan_kelas`
 --
 ALTER TABLE `tbl_tingkatan_kelas`
-  ADD PRIMARY KEY (`kd_tingkatan`);
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `kd_tingkatan` (`kd_tingkatan`);
 
 --
 -- Indexes for table `tbl_user`
@@ -691,18 +671,6 @@ ALTER TABLE `tbl_tingkatan_kelas`
 ALTER TABLE `tbl_user`
   ADD PRIMARY KEY (`id_user`),
   ADD UNIQUE KEY `username` (`username`);
-
---
--- Indexes for table `tbl_user_rule`
---
-ALTER TABLE `tbl_user_rule`
-  ADD PRIMARY KEY (`id_rule`);
-
---
--- Indexes for table `tbl_walikelas`
---
-ALTER TABLE `tbl_walikelas`
-  ADD PRIMARY KEY (`id_walikelas`);
 
 --
 -- AUTO_INCREMENT for dumped tables
@@ -715,52 +683,70 @@ ALTER TABLE `tabel_menu`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 
 --
+-- AUTO_INCREMENT for table `tbl_absensi`
+--
+ALTER TABLE `tbl_absensi`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=37;
+
+--
 -- AUTO_INCREMENT for table `tbl_dosen`
 --
 ALTER TABLE `tbl_dosen`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `tbl_jadwal`
 --
 ALTER TABLE `tbl_jadwal`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=69;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
--- AUTO_INCREMENT for table `tbl_kurikulum`
+-- AUTO_INCREMENT for table `tbl_jadwal_mahasiswa`
 --
-ALTER TABLE `tbl_kurikulum`
-  MODIFY `id_kurikulum` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+ALTER TABLE `tbl_jadwal_mahasiswa`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
--- AUTO_INCREMENT for table `tbl_kurikulum_detail`
+-- AUTO_INCREMENT for table `tbl_jurusan`
 --
-ALTER TABLE `tbl_kurikulum_detail`
-  MODIFY `id_kurikulum_detail` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+ALTER TABLE `tbl_jurusan`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
+-- AUTO_INCREMENT for table `tbl_kelas`
+--
+ALTER TABLE `tbl_kelas`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `tbl_level_user`
 --
 ALTER TABLE `tbl_level_user`
-  MODIFY `id_level_user` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id_level_user` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
--- AUTO_INCREMENT for table `tbl_mhs`
+-- AUTO_INCREMENT for table `tbl_mahasiswa`
 --
-ALTER TABLE `tbl_mhs`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+ALTER TABLE `tbl_mahasiswa`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
--- AUTO_INCREMENT for table `tbl_nilai`
+-- AUTO_INCREMENT for table `tbl_mapel`
 --
-ALTER TABLE `tbl_nilai`
-  MODIFY `id_nilai` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+ALTER TABLE `tbl_mapel`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
--- AUTO_INCREMENT for table `tbl_riwayat_kelas`
+-- AUTO_INCREMENT for table `tbl_prodi`
 --
-ALTER TABLE `tbl_riwayat_kelas`
-  MODIFY `id_riwayat` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+ALTER TABLE `tbl_prodi`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT for table `tbl_ruangan`
+--
+ALTER TABLE `tbl_ruangan`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `tbl_tahun_akademik`
@@ -769,22 +755,16 @@ ALTER TABLE `tbl_tahun_akademik`
   MODIFY `id_tahun_akademik` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
+-- AUTO_INCREMENT for table `tbl_tingkatan_kelas`
+--
+ALTER TABLE `tbl_tingkatan_kelas`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
 -- AUTO_INCREMENT for table `tbl_user`
 --
 ALTER TABLE `tbl_user`
-  MODIFY `id_user` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
-
---
--- AUTO_INCREMENT for table `tbl_user_rule`
---
-ALTER TABLE `tbl_user_rule`
-  MODIFY `id_rule` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
-
---
--- AUTO_INCREMENT for table `tbl_walikelas`
---
-ALTER TABLE `tbl_walikelas`
-  MODIFY `id_walikelas` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id_user` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=60;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
