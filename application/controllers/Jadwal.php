@@ -50,7 +50,7 @@
 			];
 			
 			$data['id_level_user'] = $this->session->userdata('id_level_user');
-			$data['jadwal'] = $this->model_jadwal->getDetailJadwal($filter['id_jadwal'])->row_array();;
+			$data['jadwal'] = $this->model_jadwal->getDetailJadwal($filter['id_jadwal'])->row_array();
 			$data['mahasiswa'] = $this->model_jadwal->getListMahasiswa($filter);
 			$this->template->load('template', 'jadwal/detail', $data);
 		}

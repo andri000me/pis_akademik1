@@ -56,7 +56,7 @@
 		{
 			$sql = "SELECT tj.id, tj.kd_kelas, tju.nama_jurusan, tj.kd_mapel, 
 						tm.nama as nama_matkul, tm.sks, tu.nama_lengkap as nama_dosen,
-						tj.jam, tr.nama_ruangan, tj.hari, tj.semester 
+						tj.jam, tr.nama_ruangan, tj.hari, tj.semester, tj.pertemuan_ke 
 					FROM tbl_jadwal AS tj
 					LEFT JOIN tbl_jurusan AS tju ON tj.kd_jurusan = tju.kd_jurusan
 					LEFT JOIN tbl_ruangan AS tr ON tj.kd_ruangan = tr.kd_ruangan

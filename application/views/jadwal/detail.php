@@ -65,7 +65,15 @@
 
             <!-- button add -->
             <?php
+              if ($id_level_user == 1) {
                 echo anchor('jadwal/list_mahasiswa/'.$jadwal['id'], '<button class="btn bg-navy btn-flat margin">Tambah Data</button>');
+              }
+            ?>
+            <!-- button view absensi -->
+            <?php
+              if (in_array($id_level_user, array(1,3,5))) {
+                echo anchor('absensi?jadwal='.$jadwal['id'], '<button class="btn btn-success bg-navy btn-flat margin">Lihat Absensi</button>');
+              }
             ?>
 
               <table id="mytable" class="table table-striped table-bordered table-hover table-full-width dataTable" cellspacing="0" width="100%">
@@ -77,7 +85,11 @@
                         <th>GENDER</th>
                         <th>KELAS</th>
                         <th>ANGKATAN</th>
-                        <th>AKSI</th>
+                        <?php
+                          if ($id_level_user == 1) {
+                            echo "<th>Aksi</th>";
+                          }
+                        ?>
                     </tr>
                 </thead>
                 <?php
@@ -86,19 +98,25 @@
                       $id_jadwal = $jadwal['id'];
                       foreach ($mahasiswa->result() as $row) {
                         $row->gender = $row->gender == 'P' ? 'Laki-Laki' : 'Perempuan';
-                        echo "<tr>
+                        $tr = "<tr>
                               <td>$no</td>
                               <td>$row->nim</td>
                               <td>$row->nama_lengkap</td>
                               <td>$row->gender</td>
                               <td>$row->kd_kelas</td>
                               <td>$row->angkatan</td>
-                              <td>
-                                  <a href='/jadwal/delete_mahasiswa/$row->id?id_jadwal=$id_jadwal' class='btn btn-xs btn-danger' data-placement='top'><i class='fa fa-edit'>Delete</i></a>
-                              </td>
-                          </tr>
                         ";
   
+                        if ($id_level_user == 1) {
+                          $tr .= "
+                            <td>
+                              <a href='/jadwal/delete_mahasiswa/$row->id?id_jadwal=$id_jadwal' class='btn btn-xs btn-danger' data-placement='top'><i class='fa fa-edit'>Delete</i></a>
+                            </td>
+                          ";
+                        }
+
+                        $tr .= "</tr>";
+                        echo $tr;
                         $no++;
                       }
                     }

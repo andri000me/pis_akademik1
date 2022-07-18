@@ -46,11 +46,7 @@
                             <th>Hari</th>
                             <th>Jam</th>
                             <th>Ruang</th>
-                            <?php 
-                                if ($this->session->userdata('id_level_user') == 1) {
-                                    echo "<th>AKSI</th>";
-                                }
-                            ?>
+                            <th>Aksi</th>
                         </tr>
                     </thead>
 
@@ -68,15 +64,18 @@
                                     <td>$row->hari</td>
                                     <td>$row->jam</td>
                                     <td>$row->nama_ruangan</td>
-                               ";
-
-                            if (in_array($this->session->userdata('id_level_user'), array(1,3))) {
-                                $tr = $tr . "
                                     <td>
                                         <a href='/jadwal/detail/$row->id' class='btn btn-xs btn-primary' data-placement='top'><i class='fa fa-eye'></i></a>
                                     </td>
-                                ";
-                            }
+                               ";
+
+                            // if (in_array($this->session->userdata('id_level_user'), array(1,3))) {
+                            //     $tr = $tr . "
+                            //         <td>
+                            //             <a href='/jadwal/detail/$row->id' class='btn btn-xs btn-primary' data-placement='top'><i class='fa fa-eye'></i></a>
+                            //         </td>
+                            //     ";
+                            // }
     
                             $tr = $tr . "</tr>";
                             
