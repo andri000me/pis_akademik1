@@ -1,3 +1,7 @@
 Requitment
 ----------
-- PHP 7
+- XAMPP
+
+Database
+----------
+- pis_akademik
