@@ -14,7 +14,8 @@
 		
 		function index()
 		{
-			$data['user'] = $this->model_user->getAll();
+			$filter = ['id_level_user' => ['1', '6']];
+			$data['user'] = $this->model_user->getAll($filter);
       		$this->template->load('template', 'user/view', $data);
 		}
 

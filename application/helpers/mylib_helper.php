@@ -1,10 +1,13 @@
 <?php
 
-	function cmb_dinamis($name, $table, $field, $pk, $selected=null, $extra=null)
+	function cmb_dinamis($name, $table, $field, $pk, $selected=null, $extra=null, $filters=null)
 	{
 		$ci   = get_instance();
 		$cmb  = "<select name='$name' class='form-control' $extra>";
 
+		if ($filters != null) {
+			$ci->db->where_in("id_level_user", $filters["id_level_user"]);
+		}
 		$data = $ci->db->get($table)->result();
 		foreach ($data as $row) {
 			$cmb .= "<option value='".$row->$pk."'";

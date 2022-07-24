@@ -6,12 +6,19 @@
 		public $tableProdi = "tbl_prodi";
 		public $table = "tbl_user";
 
-		function getAll()
+		function getAll($filter)
 		{
-		$sql = "SELECT * FROM `tbl_user` u LEFT JOIN tbl_level_user lu ON lu.id_level_user = u.id_level_user;
-		";
-		$data = $this->db->query($sql);
-				return $data;
+			$sql = "SELECT * FROM `tbl_user` u 
+				LEFT JOIN tbl_level_user lu ON lu.id_level_user = u.id_level_user
+				WHERE 1=1
+			";
+
+			if (array_key_exists("id_level_user", $filter)) {
+				$sql = $sql." AND lu.id_level_user IN (".implode(',',$filter["id_level_user"]).")";
+			}
+
+			$data = $this->db->query($sql);
+			return $data;
 		}
 
 		function getProdiByIdUser($id_user)
