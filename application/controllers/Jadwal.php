@@ -38,7 +38,7 @@
 				$this->model_jadwal->addJadwal();
 				redirect('jadwal');
 			  } else {
-				$data['list_dosen'] = $this->model_dosen->getAll();
+				$data['list_dosen'] = $this->model_dosen->getAll([]);
 				$this->template->load('template', 'jadwal/add', $data);
 			  }
 		}
