@@ -71,7 +71,7 @@
             ?>
             <!-- button view absensi -->
             <?php
-              if (in_array($id_level_user, array(1,3,5))) {
+              if (in_array($id_level_user, array(1,3,5,6))) {
                 echo anchor('absensi?jadwal='.$jadwal['id'], '<button class="btn btn-success bg-navy btn-flat margin">Lihat Absensi</button>');
               }
             ?>
