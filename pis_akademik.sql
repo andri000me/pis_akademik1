@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Waktu pembuatan: 24 Jul 2022 pada 04.42
+-- Waktu pembuatan: 24 Jul 2022 pada 06.33
 -- Versi server: 10.4.13-MariaDB
 -- Versi PHP: 7.4.7
 
@@ -89,7 +89,15 @@ INSERT INTO `tbl_absensi` (`id`, `id_jadwal`, `id_mahasiswa`, `pertemuan`, `kete
 (33, 1, 2, 3, 1, '2022-07-18'),
 (34, 1, 5, 3, 1, '2022-07-18'),
 (35, 1, 2, 4, 2, '2022-07-18'),
-(36, 1, 5, 4, 1, '2022-07-18');
+(36, 1, 5, 4, 1, '2022-07-18'),
+(37, 1, 7, 5, 1, '2022-07-24'),
+(38, 1, 5, 5, 1, '2022-07-24'),
+(39, 1, 2, 5, 1, '2022-07-24'),
+(40, 1, 5, 6, 3, '2022-07-24'),
+(41, 1, 7, 6, 1, '2022-07-24'),
+(42, 1, 2, 6, 1, '2022-07-24'),
+(43, 4, 8, 1, 1, '2022-07-24'),
+(44, 4, 9, 1, 1, '2022-07-24');
 
 -- --------------------------------------------------------
 
@@ -164,8 +172,9 @@ CREATE TABLE `tbl_jadwal` (
 --
 
 INSERT INTO `tbl_jadwal` (`id`, `id_tahun_akademik`, `semester`, `kd_jurusan`, `kd_tingkatan`, `kd_kelas`, `kd_mapel`, `id_dosen`, `jam`, `kd_ruangan`, `hari`, `pertemuan_ke`) VALUES
-(1, 5, 'genap', 'TI', '01', 'IF-6K', '0001', 1, '07.15 - 08.00', '01', 'Senin', 5),
-(2, 5, 'genap', 'TI', '01', 'IF-2K', '0003', 2, '10.00 - 10.45', '02', 'Rabu', 1);
+(1, 5, 'genap', 'TI', '01', 'IF-6K', '0001', 1, '07.15 - 08.00', '01', 'Senin', 7),
+(2, 5, 'genap', 'TI', '01', 'IF-2K', '0003', 2, '10.00 - 10.45', '02', 'Rabu', 1),
+(4, 5, 'genap', 'TI', '01', 'IF-6E', '0002', 1, '10.00 - 10.45', '01', 'Jumat', 2);
 
 -- --------------------------------------------------------
 
@@ -185,7 +194,12 @@ CREATE TABLE `tbl_jadwal_mahasiswa` (
 
 INSERT INTO `tbl_jadwal_mahasiswa` (`id`, `id_mahasiswa`, `id_jadwal`) VALUES
 (2, 2, 1),
-(3, 5, 1);
+(3, 5, 1),
+(4, 7, 1),
+(5, 7, 2),
+(6, 4, 2),
+(7, 8, 4),
+(8, 9, 4);
 
 -- --------------------------------------------------------
 
@@ -230,7 +244,8 @@ CREATE TABLE `tbl_kelas` (
 INSERT INTO `tbl_kelas` (`id`, `kd_kelas`, `nama_kelas`, `kd_tingkatan`, `kd_jurusan`) VALUES
 (1, 'IF-2K', 'IF-2K', '01', 'TI'),
 (2, 'IF-6K', 'IF-6K', '01', 'TI'),
-(3, 'IF-6C', 'IF-6C', '01', 'TI');
+(3, 'IF-6C', 'IF-6C', '01', 'TI'),
+(4, 'IF-6E', 'IF-6E', '01', 'TI');
 
 -- --------------------------------------------------------
 
@@ -280,7 +295,11 @@ INSERT INTO `tbl_mahasiswa` (`id`, `nim`, `id_user`, `tgl_lahir`, `tmpt_lahir`, 
 (2, 'D111921133', 49, '1998-01-03', 'Bandung', 1, 'IF-6K', '2019'),
 (3, 'D111921135', 50, '1999-11-25', 'Bandung', 1, 'IF-2K', '2021'),
 (4, 'D111921120', 58, '1998-01-01', 'Bandung', 1, 'IF-2K', '2021'),
-(5, 'D111921101', 59, '1997-01-13', 'Jakarta', 1, 'IF-6K', '2019');
+(5, 'D111921101', 59, '1997-01-13', 'Jakarta', 1, 'IF-6K', '2019'),
+(6, 'D111921181', 58, '1998-11-08', 'Bandung', 1, 'IF-6K', '2019'),
+(7, 'D111921189', 62, '1997-10-15', 'Bandung', 1, 'IF-6K', '2019'),
+(8, 'D111921190', 63, '2000-10-16', 'Bandung', 1, 'IF-6E', '2019'),
+(9, 'D111921184', 64, '1994-06-14', 'Bandung', 1, 'IF-6E', '2019');
 
 -- --------------------------------------------------------
 
@@ -342,7 +361,8 @@ CREATE TABLE `tbl_prodi` (
 --
 
 INSERT INTO `tbl_prodi` (`id`, `id_user`, `kd_jurusan`) VALUES
-(2, 57, 'TI');
+(2, 57, 'TI'),
+(3, 60, 'TI');
 
 -- --------------------------------------------------------
 
@@ -473,7 +493,7 @@ INSERT INTO `tbl_user` (`id_user`, `nama_lengkap`, `username`, `password`, `id_l
 (1, 'Taufik Hidayat', 'taufik', 'e10adc3949ba59abbe56e057f20f883e', 1, NULL, 'user-siluet2.jpg'),
 (2, 'Muhammad Mulvi', 'mulvi', 'e10adc3949ba59abbe56e057f20f883e', 1, NULL, 'user-siluet1.jpg'),
 (3, 'Ika Nurul Fadhila', 'ika', 'e10adc3949ba59abbe56e057f20f883e', 4, NULL, 'user-siluet3.jpg'),
-(10, 'Adit', 'adit', 'e10adc3949ba59abbe56e057f20f883e', 1, NULL, ''),
+(10, 'Adit', 'adit', '14e1b600b1fd579f47433b88e8d85291', 1, NULL, 'foto_eri5.jpg'),
 (11, 'Eriawan Hidayat', 'eri', 'e10adc3949ba59abbe56e057f20f883e', 3, 'P', ''),
 (12, 'Dosen Satu S.T', 'dosensatu', 'e10adc3949ba59abbe56e057f20f883e', 3, 'P', ''),
 (13, 'Dosen Dua S.T', 'dosendua', 'e10adc3949ba59abbe56e057f20f883e', 3, 'W', ''),
@@ -483,7 +503,11 @@ INSERT INTO `tbl_user` (`id_user`, `nama_lengkap`, `username`, `password`, `id_l
 (51, 'Dosen Umum', 'dosenumum', 'e10adc3949ba59abbe56e057f20f883e', 3, 'W', ''),
 (57, 'Wildan Miftahudin', 'wili', 'e10adc3949ba59abbe56e057f20f883e', 6, NULL, ''),
 (58, 'Firman Mardianto', 'firman', 'e10adc3949ba59abbe56e057f20f883e', 5, 'P', ''),
-(59, 'Bill To Gate', 'bill', 'e10adc3949ba59abbe56e057f20f883e', 5, '', '');
+(59, 'Bill To Gate', 'bill', 'e10adc3949ba59abbe56e057f20f883e', 5, '', ''),
+(60, 'Devi Oktaviani', 'oktavian', 'e10adc3949ba59abbe56e057f20f883e', 6, NULL, 'pp.jfif'),
+(62, 'M Fauzan Hilmi', 'hilmi', 'e10adc3949ba59abbe56e057f20f883e', 5, 'P', 'foto_eri5.jpg'),
+(63, 'Moch Firas Al Faris', 'firas', 'e10adc3949ba59abbe56e057f20f883e', 5, 'P', 'foto_eri51.jpg'),
+(64, 'Ilham Lutfi', 'ilham', 'e10adc3949ba59abbe56e057f20f883e', 5, 'P', 'foto_eri52.jpg');
 
 -- --------------------------------------------------------
 
@@ -509,16 +533,17 @@ INSERT INTO `tbl_user_rule` (`id_rule`, `id_menu`, `id_level_user`) VALUES
 (9, 11, 1),
 (11, 14, 1),
 (17, 11, 3),
-(19, 17, 3),
-(21, 12, 3),
 (23, 4, 1),
 (0, 11, 5),
-(25, 19, 6),
 (0, 1, 6),
 (0, 2, 6),
 (0, 1, 3),
 (0, 1, 5),
-(0, 5, 1);
+(0, 5, 1),
+(0, 9, 6),
+(0, 11, 6),
+(0, 4, 6),
+(0, 9, 1);
 
 -- --------------------------------------------------------
 
@@ -682,7 +707,7 @@ ALTER TABLE `tabel_menu`
 -- AUTO_INCREMENT untuk tabel `tbl_absensi`
 --
 ALTER TABLE `tbl_absensi`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=37;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=45;
 
 --
 -- AUTO_INCREMENT untuk tabel `tbl_dosen`
@@ -694,13 +719,13 @@ ALTER TABLE `tbl_dosen`
 -- AUTO_INCREMENT untuk tabel `tbl_jadwal`
 --
 ALTER TABLE `tbl_jadwal`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT untuk tabel `tbl_jadwal_mahasiswa`
 --
 ALTER TABLE `tbl_jadwal_mahasiswa`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT untuk tabel `tbl_jurusan`
@@ -712,7 +737,7 @@ ALTER TABLE `tbl_jurusan`
 -- AUTO_INCREMENT untuk tabel `tbl_kelas`
 --
 ALTER TABLE `tbl_kelas`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT untuk tabel `tbl_level_user`
@@ -724,7 +749,7 @@ ALTER TABLE `tbl_level_user`
 -- AUTO_INCREMENT untuk tabel `tbl_mahasiswa`
 --
 ALTER TABLE `tbl_mahasiswa`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT untuk tabel `tbl_mapel`
@@ -736,7 +761,7 @@ ALTER TABLE `tbl_mapel`
 -- AUTO_INCREMENT untuk tabel `tbl_prodi`
 --
 ALTER TABLE `tbl_prodi`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT untuk tabel `tbl_ruangan`
@@ -760,7 +785,7 @@ ALTER TABLE `tbl_tingkatan_kelas`
 -- AUTO_INCREMENT untuk tabel `tbl_user`
 --
 ALTER TABLE `tbl_user`
-  MODIFY `id_user` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=60;
+  MODIFY `id_user` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=65;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
