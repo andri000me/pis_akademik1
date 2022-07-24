@@ -44,7 +44,8 @@
 
                       <div class="col-sm-5">
                         <?php
-                          echo cmb_dinamis('level_user', 'tbl_level_user', 'nama_level', 'id_level_user', $user['id_level_user']);
+                        $filter = ["id_level_user" => [1,6]];
+                          echo cmb_dinamis('level_user', 'tbl_level_user', 'nama_level', 'id_level_user', $user['id_level_user'], null, $filter);
                         ?>
                       </div>
                   </div>
